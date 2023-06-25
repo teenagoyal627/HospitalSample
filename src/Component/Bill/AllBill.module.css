@@ -1,0 +1,15 @@
+
+.button{
+    border-radius: 0.5rem;
+    font-size: 1.3rem;
+    width: 10rem;
+    color: black;
+    padding: 0.1rem;
+    text-decoration:none;
+    margin-left: 13rem;
+}
+.button:hover,
+.button:active{
+    background-color: aqua;
+    border-color: aqua;
+}
