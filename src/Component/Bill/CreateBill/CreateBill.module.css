@@ -1,0 +1,70 @@
+.form{
+    padding:.2rem;
+    margin-left: 1rem;
+    width: 40rem;
+}
+.date{
+    padding: .2rem;
+    margin-bottom: 0.001rem;
+
+}
+.heading{
+    font-size: 1.5rem;
+    text-align: center;
+    padding: .01rem;
+}
+.control
+{
+    margin-bottom: .3rem;
+}
+.control label{
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+}
+.control input{
+    padding: 0.1rem;
+    width: 35rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.1rem;
+    margin-left: .2rem;
+    border: 1px solid black;
+}
+
+.form button{
+        width: 40rem;
+        padding: 0.1rem;
+        margin-top: .5rem;
+        margin-left: .2rem;
+        border-radius: 0.5rem;
+        font-size: 1.1rem;
+        color: rgb(24, 23, 23);
+}
+
+.form button:hover,
+.form button:active{
+    cursor: pointer;
+    background-color: rgb(157, 165, 232);
+    border-color: rgb(157, 165, 232);
+}
+.remove{
+   /* background-color: red; */
+   display: inline;
+   margin-left: .1rem;
+   
+}
+.remove:hover{
+    cursor: pointer;
+}
+.medicalData{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    width: 3rem;
+    
+}
+.warning{
+    color:red;
+    margin-left: 1rem;
+    font-weight: bold;
+}

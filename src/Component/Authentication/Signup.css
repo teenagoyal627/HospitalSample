@@ -43,38 +43,14 @@
    margin-left: 1rem;
 
 }
-.links{
+.link{
  
     text-decoration:none;
     margin-left: .5rem;
     font-size: 1rem;
-    /* background-color: black; */
-    color:red;
+    color: rgb(210, 80, 44);
 }
 
-.links:hover{
+.link:hover{
         text-decoration: none;
-        cursor: pointer;
 }
-.messages{
-    display: flex;
-    justify-content: center;
-    }
-    
-.error{
-    display: block;
-    background-color: red;
-    color: white;
-    
-    }
-.error h1{
-    font-size: 25px;
-}
-
-.success{
-    display: block;
-    background-color: lightblue;
-    color: black;
-    width: fit-content;
-    height: 50px;
-    }

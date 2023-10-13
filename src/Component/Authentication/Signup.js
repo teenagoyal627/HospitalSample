@@ -1,142 +1,194 @@
-import { Link } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Firebase";
-import classes from "./Signup.module.css";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import ShowAndHidePassword from "./ShowAndHidePassword";
+import React, {  useState } from "react";
+import "./Signup.css";
+import { auth, db } from "../../Firebase";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import { doc, setDoc } from "firebase/firestore";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithPopup,
+} from "firebase/auth";
+import HomePageNavigation from "../Header/HomePageNavigation";
 
-function Signup() {
+const Signup = (shopId) => {
   const history = useHistory();
-  //States for signup
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [visible,setVisible]=useState(false);
+  
 
-  //handle the name change
-  const handleName = (event) => {
-    setUserName(event.target.value);
-    setSubmitted(false);
+  
+  const Validation =()=>{
+    const regExEmail = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+    const regExPass = "^(?=.*[0-9])"
+    + "(?=.*[a-z])(?=.*[A-Z])"
+    + "(?=.*[@#$%^&+=])"
+    + "(?=\\S+$).{8,20}$";  
+    const regExUser=  "^[A-Za-z][A-Za-z0-9_]{4,29}$";
+     if(regExEmail.test(email) && regExPass.match(password) && regExUser.match(userName)){
+        console.log("valid email")
+      }else if(!regExEmail.test(email) && email===""  &&  !regExPass.match(password) && password==="" && !regExPass.match(userName) && userName===""){
+        alert("Check Email and enter strong password")
+        history.replace('/signup')
+      }
+      else{
+        alert("successfully signup");
+      }
   }
+  
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      //get the current user ID
+      const auth = getAuth();
+      // console.log(auth)
+      // console.log(typeof(auth))
 
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-    setSubmitted(false);
-  };
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
-    setSubmitted(false);
-  };
-  //for form submission
-  const onSubmit = e => {
-    e.preventDefault()
-    setError('')
-      // Create a new user with email and password using firebase
-        createUserWithEmailAndPassword(auth, email,password
-          )
-        .then((res) => {
-            console.log(res.user)
-          })
-        .catch(err => setError(err.message))
-    
-    if (userName === "" || email === "" || password === ""
-    ) {
-      setError(true);
-    } else {
-      setSubmitted(true);
-      setError(false);
-      history.replace("/shop");
+      const userCrediential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(userCrediential)
+      console.log(typeof(userCrediential))
+      const userId = userCrediential.user.uid;
+      //check user id is present or not
+      if (userId != null) 
+      console.log(userId);
+      console.log(typeof(userId))
+      // const userRef = doc(db, "users", userId);
+      // const userSnap = await getDoc(userRef);
+      // if (userSnap.exists()) {
+      //   alert("email already exists ");
+      // }
+      history.replace("/userDetails");
+
+      const dateAndTime = new Date();
+      await setDoc(doc(db, "users", userId), {
+        UserName: userName,
+        Email: email,
+        CreatedAt: dateAndTime,
+        UpdatedAt: dateAndTime,
+        ShopId:shopId
+      });
+      // const docRef = doc(db, "users", userId);
+      // const docSnap = await getDoc(docRef);
+      // if (!docSnap.exists()) {
+      //   await setDoc(docRef, {
+      //     UserName: userName,
+      //     Email: email,
+      //     CreatedAt: dateAndTime,
+      //     UpdatedAt: dateAndTime,
+      //   });
+      // }
+      setUserName("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          alert("Email already in use !");
+          break;
+        default:
+          break;
+      }
     }
-    setEmail("");
-    setPassword("");
-    setUserName("");
   };
 
-  //showing success message
-  const successMessage = () => {
-    return (
-      <div
-        className={classes.success}
-        style={{ display: submitted ? " " : "none" }}
-      >
-        <h1> user successfully signup!!</h1>
-      </div>
-    );
-  };
-  // Showing error message if error is true
-  const errorMessage = () => {
-    return (
-      <div className={classes.error} style={{ display: error ? "" : "none" }}>
-        <h1>Please enter all the fields</h1>
-      </div>
-    );
+  const googleHandler = () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          GoogleAuthProvider.credentialFromResult(result);
+          history.replace("/userDetails");
+        })
+        .catch((error) => {
+          if (error.code === "auth/account-exists-with-different-credential") {
+            alert("email already used");
+            var pendingCred = error.credential;
+            console.log(pendingCred);
+          }
+        });
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
-    <div className={classes.form}>
+    <div>
+    <HomePageNavigation/>
+    <div className="form">
       <div>
-        <h1>Signup</h1>
+        <h1 className="heading">Signup</h1>
       </div>
-      <div className={classes.message}>
-        {errorMessage()}
-        {successMessage()}
-      </div>
-      {/* from for the sign up */}
-      <form>
-        <label> User Name</label>
+      <form onSubmit={submitHandler}>
         <input
-          onChange={handleName}
-          placeholder="user name"
-          value={userName}
           type="text"
-          autoComplete="user-name"
-          required
+          placeholder="Enter your user name"
           id="name"
+          autoComplete="new-user"
+          required
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
         />
-
-        <label>Email</label>
         <input
           type="email"
-          placeholder="email"
-          required
+          placeholder="Enter your email"
           id="email"
-          value={email}
           autoComplete="new-email"
-          onChange={handleEmail}
-        />
-
-        <label>Password</label>
-       
-        <ShowAndHidePassword/>
-        <input
-          onChange={handlePassword}
-          placeholder="password"
           required
-          autoComplete="new-password"
-          id="password"
-          value={password}
-          type="password"
-          
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <br />
-        <br />
-        <button onClick={onSubmit} className={classes.btn} type="submit">
-          Sign up
-        </button>
-        <br />
+        <div
+         style={{
+          display:"flex",
+          alignItems:"center"}}
+         >
+        <input
+          type={visible ? "text" :"password"}
+          placeholder="Enter password"
+          id="password"
+          autoComplete="new-password"
+          required
+          value={password}
+          style={{width:"30rem",paddingRight: "2rem" }}
+          onChange={(e) => setPassword(e.target.value)}
+        ></input> 
+        <div style={{
+          cursor:"pointer",
+          position:"absolute",
+          marginBottom:"1rem",
+          right:"17rem",
+         
+          }} 
+        onClick={()=>setVisible(!visible)}
+        >
+          {visible ? <AiOutlineEye /> :  <AiOutlineEyeInvisible />}
+        </div>
+        </div>
+        <button type="submit" onClick={Validation } >Sign up</button>
         <hr />
         <div>
-          <h5>
-            Already have an account
-            <Link to="/login" className={classes.link}>
-              Login
-            </Link>
-          </h5>
+          <button type="submit" onClick={googleHandler}>
+            Google
+          </button>
         </div>
+        <h5>
+          Already have an account ?
+          <Link to="/login" className="link">
+            Login
+          </Link>
+        </h5>
       </form>
     </div>
+    </div>
   );
-}
+};
+
 export default Signup;
+

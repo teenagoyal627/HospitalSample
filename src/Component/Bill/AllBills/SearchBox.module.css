@@ -1,0 +1,39 @@
+/* Style for the table */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  /* Style for table header row */
+  .table thead th {
+    background-color: #f2f2f2;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Style for table data rows */
+  .table tbody td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Style for alternate row background color */
+  .table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Style for the View Bill button */
+  .buttons {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .buttons:hover {
+    background-color: #0056b3;
+  }
+  

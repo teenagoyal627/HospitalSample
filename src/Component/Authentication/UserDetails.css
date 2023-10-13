@@ -1,0 +1,49 @@
+.forms {
+  padding: 1rem;
+  background-color:rgb(209, 224, 243);
+  width: 35rem;
+  border-radius: 8px;
+  align-items: center;
+  box-shadow: 0 10px 10px black(0, 0, 0.2);
+  margin: 12rem auto;
+}
+.heading {
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0.3rem;
+}
+.forms label {
+  margin-left: 1rem;
+  font-size: 1rem;
+  margin-bottom: 0.1rem;
+}
+.forms input {
+  padding: 0.3rem;
+  width: 30rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
+  border: 1px solid black;
+}
+.forms button {
+  width: 30rem;
+  padding: 0.2rem;
+  margin: auto;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  color: rgb(24, 23, 23);
+}
+
+.forms button:hover,
+.forms button:active {
+  cursor: pointer;
+  background-color: rgb(157, 165, 232);
+  border-color: rgb(157, 165, 232);
+}
+.photo{
+    margin-top: .3rem;
+    margin: auto;
+}

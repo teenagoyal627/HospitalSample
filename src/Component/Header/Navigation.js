@@ -5,6 +5,7 @@ function Navigation(props) {
     return (
         <div>
             <HeaderLine />
+            
             <main className={classes.main}>
                 {props.children}
             </main>

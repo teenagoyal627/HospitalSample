@@ -1,0 +1,156 @@
+
+.container{
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 20px;
+    /* background-color: red; */
+}
+.nav-bar
+{
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color:#1b3e5a ;
+    padding:0 3rem;
+
+}
+.logo h1
+{
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(243, 243, 243);
+}
+
+.nav-bar li{
+  align-items: center;
+  margin-left: 2rem;
+    
+}
+.nav-bar a{
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: rgb(239, 234, 234);
+}
+.nav-bar a:hover,
+.nav-bar a:active{
+    text-decoration: none;
+    color: rgb(237, 138, 138);}
+
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+.main-nav{
+ justify-content: space-between;
+ background-color:#1b3e5a ;
+}
+.company-logo h1{
+    font-size: 1rem;
+}
+.nav-links{
+    flex-basis: 730px;
+}
+.nav-links ul{
+    justify-content: end;
+    gap: 40px;
+}
+
+/* header class */
+header{
+    padding: 50px 20px ;
+}
+.header-section {
+    justify-content: center;
+    gap: 50px;
+}
+.header-left h1{
+    margin-top: 20px;
+    font-size: 1.5rem;
+
+}
+.header-left{
+    max-width: 40vw;
+}
+.header-right img{
+    width: 600px;
+}
+.button{
+    border-radius: 0.90rem;
+    font-size: 1.3rem;
+    width: 10rem;
+    padding: 0.1rem;
+    align-items: center;
+    margin-left: 1rem;
+}
+.button:hover,
+.button:active{
+    background-color:#a4ccf0;
+    border-color:#f7f8f9;
+}
+/* features */
+.features-header{
+   flex-direction: column;
+   gap: 20px;
+}
+
+.features-card{
+    width: 23%;
+    position: relative;
+    min-height: 300px;
+    /* background: black; */
+    transition: 0.2s ease-out ;
+    background-size: cover;
+    background: linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQgIeptiR_CMtAGiO4x8Knironnq-rID41KQ&usqp=CAU');
+    /* background-image:url('https://previews.123rf.com/images/dxinerz/dxinerz1504/dxinerz150401176/38960248-checklist-items-clipboard-icon-vector-image-can-also-be-used-for-banking-finance-business.jpg'); */
+}
+.features-card:hover{
+ box-shadow: 10px 10px 20px #888;
+}
+.features-text{
+    position:absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    color: white;
+}
+.features-area{
+    justify-content: space-between;
+    margin-bottom: 3rem;
+}
+/* section */
+.section{
+    padding: 30px 20px 0;
+}
+.section-container{
+    gap: 30px;
+}
+.section-img img{
+    width: 100%;
+}
+
+.section-desc{
+    flex-direction: column;
+    align-items: flex-start;
+}
+.section-desc h3{
+ font-size: 1.5rem;
+}
+
+
+.cta-section-container{
+    flex-direction: column;
+    gap: 30px;
+    /* color: black; */
+}
+
+.cta-section{
+    background-color: #183b54;
+    padding: 50px 20px 80px;
+}
+.footer-container{
+    margin-top: 3rem;
+    padding: 3rem;
+}
