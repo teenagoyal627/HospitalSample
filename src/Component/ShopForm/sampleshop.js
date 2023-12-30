@@ -2,18 +2,20 @@ import { collection, addDoc } from "firebase/firestore";
 import { useState } from "react";
 import Card from "../UI/Card";
 import classes from "./Shop.module.css";
-import { db } from "../../Firebase";
+import { db, storage } from "../../Firebase";
 import { useHistory } from "react-router";
 import { getAuth } from "firebase/auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Signup from "../Authentication/Signup";
 import Navigation from "../Header/Navigation";
 
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 function Shop() {
   const history = useHistory();
   const [shopName, setShopName] = useState("");
-  // const [file, setFile] = useState(null);
+  const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -33,21 +35,24 @@ function Shop() {
       [name]: value,
     }));
   };
-  // const handleFileChange = (e) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     setFile(e.target.files[0]);
-  //   }
-  // };
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async (event) => {
+    event.preventDefault();
     setShowConfirmationModal(true);
-    try {
+    if (!file) return;
+    //this function will be called when the upload is completed
+    const handleUploadComplete = (downloadURL) => {
       const userId = getAuth().currentUser.uid;
-      console.log(userId);
-     addDoc(collection(db, "ShopDetails"), {
+      console.log("user id in shop details ",userId);
+
+     const dataRef =  addDoc(collection(db, "ShopDetails"), {
         shopName: shopName,
-        //image: downloadURL,
+        image: downloadURL, 
         Name: name,
         MobileNumber: mobileNumber,
         email: email,
@@ -58,17 +63,69 @@ function Shop() {
           PostalCode: address.postalCode,
           Country: address.country,
         },
-      });
-    } catch {
-      alert("Please fill all and correct medicines data");
+      })
+      console.log(dataRef.id)
+        .then((shopDataRef) => {
+          const shopId = shopDataRef.id;
+          console.log("the id of shop is ",shopId);
+          <div>
+            <Signup shopId={shopId} />
+          </div>;
+          alert("image is uploaded successfully");
+        })
+        .catch((error) => {
+          console.error("Error adding shop data: ", error);
+          alert("Error uploading image");
+        });
+    };
+
+    //this is for store the data on firestore
+    try {
+      const storageRef = ref(storage, `shop_Image/${file.name}`);
+      console.log("storage ref is called");
+      const metadata = {
+        contentType: "image/jpeg",
+      };
+      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // This function will be called during the upload process
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        console.log("now getdownload url run"),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              console.log("file is available is ", downloadURL);
+              handleUploadComplete(downloadURL);
+            })
+            .catch((error) => {
+              alert("error uploading image", error);
+            });
+          // console.log("downlaod url run");
+        }
+      )} catch (err) {
+      alert("error uploading image" + err);
     }
   };
-
   const handleConfirm = () => {
     setShowConfirmationModal(false);
     history.push("/inventory");
     setShopName("");
-    // setFile("");
+    setFile("");
     setName("");
     setMobileNumber("");
     setEmail("");
@@ -103,10 +160,14 @@ function Shop() {
               onChange={(e) => setShopName(e.target.value)}
             />
           </div>
-          {/* <div className={classes.control}>
+          <div className={classes.control}>
             <label htmlFor="name">Shop Image</label>
-            <input type="file" required onChange={handleFileChange} />
-          </div> */}
+            <input
+              type="file"
+              required
+              onChange={handleFileChange}
+            />
+          </div>
           <div className={classes.control}>
             <label htmlFor="name">Owner Name</label>
             <input

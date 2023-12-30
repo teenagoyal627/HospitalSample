@@ -1,10 +1,12 @@
 import React from "react";
 import classes from './AllBill.module.css'
-const DialogBoxContent = ({ records, objectID, bill, currentUser, medicineDialog }) => {
-
+const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medicineDialog }) => {
+        //console.log(searchCurrentUser)
+        //console.log("records are ",records)
+       // console.log("the current user of allbill",currentUser)
   const totalAmount = () => {
     if (bill.length > 0 && medicineDialog.billIndex !== null) {
-      const currentBill = bill[medicineDialog.billIndex];
+      const currentBill = records[medicineDialog.billIndex];
       return currentBill.MedicineEntries.reduce(
         (total, medicine) => total + medicine.price * 1,
         0
@@ -12,14 +14,15 @@ const DialogBoxContent = ({ records, objectID, bill, currentUser, medicineDialog
     }
     return 0;
   };
-  // const custiemr = bill[medicineDialog.billIndex];
+  // const custiemr = records[medicineDialog.billIndex];
   // console.log(custiemr)
   return (
     <form className={classes.form}>
       <div>
         {records
-          .filter((item, index) => index === currentUser || item.objectID === currentUser)
-          .map((filterdata) => (
+          .filter((item, index) =>  index === currentUser || item.id === searchCurrentUser)
+          .map((filterdata) => 
+          (
             <div key={filterdata.id}>
               <h3>Medical Invoice</h3>
               <div className={classes.container}>
@@ -28,7 +31,7 @@ const DialogBoxContent = ({ records, objectID, bill, currentUser, medicineDialog
                   <p>Hospital Name: {filterdata.HospitalName}</p>
                   <p>Doctor Name: {filterdata.DoctorName}</p>
                 </div>
-
+                  
                 <div className={classes.rightData}>
                   <p>Patient Name: {filterdata.PatientName}</p>
                   <p>Mobile Number:{filterdata.MobileNumber}</p>

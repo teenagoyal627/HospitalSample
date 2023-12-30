@@ -52,12 +52,12 @@ const Signup = (shopId) => {
         email,
         password
       );
-      console.log(userCrediential)
-      console.log(typeof(userCrediential))
+      // console.log(userCrediential)
+      //console.log(typeof(userCrediential))
       const userId = userCrediential.user.uid;
       //check user id is present or not
       if (userId != null) 
-      console.log(userId);
+      console.log("the user id is   ",userId);
       console.log(typeof(userId))
       // const userRef = doc(db, "users", userId);
       // const userSnap = await getDoc(userRef);

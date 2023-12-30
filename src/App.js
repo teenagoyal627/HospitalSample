@@ -11,13 +11,15 @@ import Inventory from "./Component/Bill/Inventory/Inventories"
 import InventoryForm from "./Component/Bill/Inventory/InventoryForm"
 import CreateBill from "./Component/Bill/CreateBill/CreateBill"
 import AllBill from "./Component/Bill/AllBills/AllBill"
+import Profile from "./Component/Authentication/Profile"
+import Logout from "./Component/Authentication/Logout"
 // import  AlgoliaSearch  from "./Component/Bill/AllBills/AlgoliaSearch"
 
 function App(){
   return(
     <div>
     <Route path='/'exact><Home/></Route>
-    <Route path  ='/userDetails'><UserDetails/></Route>
+    <Route path='/userDetails'><UserDetails/></Route>
    <Route path='/shop'><Shop/></Route>
    <Route path='/createBill'><CreateBill/></Route>
    <Route path='/allBill'><AllBill/></Route>
@@ -25,6 +27,8 @@ function App(){
    <Route path='/inventoryForm'><InventoryForm/></Route>
    <Route path='/login'><Login/></Route>
    <Route path='/signup'><Signup/></Route>
+   <Route path='/profile'><Profile/></Route>
+   <Route path='/logout'><Logout/></Route>
    {/* <Route path='/search'><AlgoliaSearch/></Route> */}
 </div>
   )

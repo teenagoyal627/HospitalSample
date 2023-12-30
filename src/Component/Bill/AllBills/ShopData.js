@@ -10,7 +10,6 @@ const ShopData = ({shopDetails}) => {
     </div> */}
 
             <h2 className={classes.shopName}>{shopDetails.shopName}</h2>
-            {/* <h2 className={classes.text}>(Medical Shop)</h2> */}
             <div className={classes.addressContainer}>
             <h2 >{shopDetails.Address.StreetAddress}</h2>
             <h2>,{shopDetails.Address.City}</h2>

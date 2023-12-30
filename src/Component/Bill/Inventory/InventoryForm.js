@@ -1,11 +1,12 @@
-import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { db } from "../../../Firebase";
 import Card from "../../UI/Card";
 import classes from "./InventoryForm.module.css";
 import Navigation from "../../Header/Navigation";
 import { getAuth } from "firebase/auth";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 function InventoryForm() {
   const [medicineName, setMedicineName] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -17,10 +18,83 @@ function InventoryForm() {
   const [composition, setComposition] = useState("");
   const history = useHistory();
 
+  const location=useLocation();
+  const {inventoryData}=location.state || {};
+   console.log("the inventory form data is ",inventoryData)
+
+//    const [formData,setFormData]=useState({
+//     medicineName:'',
+//     quantity:'',
+//     price:'',
+//     mfgDate:'',
+//     expireDate:'',
+//     mg:'',
+//     company:'',
+//     composition:'',
+// })
+
+// useEffect(()=>{
+//   const fetchInventory=async()=>{
+//     if(inventoryData){
+//       try{
+//         const inventoryDocRef =doc(db,'CreateInventory',inventoryData.id);
+//         const inventoryDocSnap=await getDoc(inventoryDocRef);
+
+//         if(inventoryDocSnap.exists()){
+//           setFormData(inventoryDocSnap.data());
+//         }else{
+//           console.log('Document not found')
+//         }
+//       }catch(error){
+//         console.log("Error fetching inventory data: ",error)
+//       }
+//     }
+//   }
+//   fetchInventory();
+//   console.log(fetchInventory)
+// },[inventoryData])
+
+// const handleChange =(e)=>{
+//   const{name,value}=e.target;
+//   setFormData((prevData)=>({
+//       ...prevData,
+//       [name]:value,
+//   }))
+// }
   const AddHandler = async (e) => {
     e.preventDefault();
+  if(inventoryData){
+    const inventoryDocRef=doc(db,"CreateInventory",inventoryData.id)
+    try{
+      await updateDoc(inventoryDocRef,{
+        MedicineName: medicineName,
+        Quantity: quantity,
+        Price: price,
+        MFGDate: mfgDate,
+        ExpireDate: expireDate,
+        MG: mg,
+        Company: company,
+        Composition: composition,
+      })
+    
+      alert("Successfully  Medicines  added in stock")
+      history.replace('/inventory')
+      setMedicineName("");
+      setQuantity("");
+      setPrice("");
+      setMfgDate("");
+      setExpireDate("");
+      setMg("");
+      setCompany("");
+      setComposition("");
+    } catch{
+      alert("Please fill all and correct medicines data")
+    }
+  }else{
+
     try {
       const userId=getAuth().currentUser.uid;
+      console.log(userId)
      const dataRef= await addDoc(collection(db, "CreateInventory"), {
         MedicineName: medicineName,
         Quantity: quantity,
@@ -30,7 +104,7 @@ function InventoryForm() {
         MG: mg,
         Company: company,
         Composition: composition,
-        UserId:userId
+        UserID:userId
       });
       alert("Successfully  Medicines  added in stock")
       history.replace('/inventory')
@@ -47,6 +121,8 @@ function InventoryForm() {
     } catch{
       alert("Please fill all and correct medicines data")
     }
+  }
+    
   };
   return (
     <div>
@@ -64,7 +140,9 @@ function InventoryForm() {
             required
             id="medicineName"
             value={medicineName}
+            // onChange={handleChange}
             onChange={(e) => setMedicineName(e.target.value)}
+
           />
         </div>
 

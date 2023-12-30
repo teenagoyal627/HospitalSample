@@ -13,7 +13,7 @@ import {
   SearchBox,
   connectHits,
 } from 'react-instantsearch-dom';
-import DialogBoxContent from "./DialogBoxContent";
+import SearchDialogBoxContent from "./SearchedDialogBox";
 
 const searchClient = algoliasearch('14OX7XE6JW', '743e303ed56223046ae6fdd3a4137847')
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -23,21 +23,23 @@ const SearchDialog = ({
   searchQuery,
   setSearchQuery,
   bill,
-  currentUser,
-  setcurrentUser,
   records,
   handlePrint,
   showShopData,
- 
+ currentUser,
+ setCurrentUser
 
 }) => {
   const [medicineDialog, setMedicineDialog] = useState({
     visible: false,
     billIndex: 0,
   });
+   const [searchCurrentUser,setSearchCurrentUser]=useState(null)
 
-  function viewHandler(index) {
-    setcurrentUser(index)
+  function viewHandler(hits,index) {
+    const objectId=hits[index].objectID;
+    console.log("the index number of aloglia search ",objectId)
+    setSearchCurrentUser(objectId)
     setMedicineDialog({
       visible: true,
       billIndex: index,
@@ -74,7 +76,16 @@ const SearchDialog = ({
             </tr>
           </thead>
           <tbody>
-            <CustomHits viewHandler={viewHandler} currentUser={currentUser} />
+            <CustomHits
+             viewHandler={(hits,index)=>viewHandler(hits,index)}
+              searchCurrentUser={searchCurrentUser} 
+               currentUser={currentUser}
+               setCurrentUser={setCurrentUser} 
+              />
+            {console.log('search currentUser according to algolia search' ,searchCurrentUser)}
+            {console.log('currentUser according to algolia search' ,currentUser)}
+            {console.log(' set currentUser according to algolia search' ,setCurrentUser)}
+
           </tbody>
         </table>
       )}
@@ -118,11 +129,12 @@ const SearchDialog = ({
           </AppBar>
           </div>
 
-          <DialogBoxContent
+          <SearchDialogBoxContent
             records={records}
-            currentUser={currentUser}
+            searchCurrentUser={searchCurrentUser}
             bill={bill}
             medicineDialog={medicineDialog}
+            
           />
         </Dialog>
         )
@@ -130,7 +142,7 @@ const SearchDialog = ({
     </InstantSearch>
   );
 };
-const CustomHits = connectHits(({ hits, viewHandler, currentUser }) => {
+const CustomHits = connectHits(({ hits, viewHandler,searchCurrentUser }) => {
   let serialNumber = 0;
   return (
     <>
@@ -144,7 +156,7 @@ const CustomHits = connectHits(({ hits, viewHandler, currentUser }) => {
             <button
               variant="outlined"
               className={classes.buttons}
-              onClick={() => viewHandler(index)}
+              onClick={() => viewHandler(hits,index)}
             >
               View Bill
             </button>

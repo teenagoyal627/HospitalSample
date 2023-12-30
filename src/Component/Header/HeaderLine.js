@@ -15,6 +15,8 @@ function HeaderLine(){
                <li><Link to='inventory' className={style.link}>Inventories</Link></li>
                <li><Link to='createBill' className={style.link}> Create Bill</Link></li>
                <li><Link to='allBill' className={style.link}>All Bill</Link></li>
+               <li><Link to='profile' className={style.link}>My Profile</Link></li>
+               <li><Link to='logout' className={style.link}>Logout</Link></li>
 
                 {/* <li><Link to ='signup' className={style.link}>Sign up</Link></li> */}
             </ul>

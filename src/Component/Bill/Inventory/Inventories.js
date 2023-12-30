@@ -1,36 +1,78 @@
 import React, { useEffect, useState } from 'react'
-import GetMedicineData from './GetMedicineData';
 import {Link} from 'react-router-dom'
 import './Inventories.css'
 import {AiFillEdit,AiFillDelete} from 'react-icons/ai'
 import Navigation from '../../Header/Navigation';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { getAuth } from 'firebase/auth';
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../../Firebase';
+
 const Inventory = () => {
-    const[loading,setLoading]=useState(false);
-    const[medicineData,setMedicineData]=useState([])
+    
+    const[inventory,setInventory]=useState([]);
+    // const[hasInventory,setHasInventory]=useState(false);
     const history=useHistory();
 
-    const editHandler=()=>{
-        history.replace("/inventoryForm")
+    
+    const editHandler=(inventoryData)=>{
+        console.log("edit button is clicked")
+        history.replace({
+            pathname:"/inventoryForm",
+            state:{inventoryData},})
     }
-    const deleteHandler=()=>{
-        console.log("delete button")
+
+    const deleteFromFirestore=async(id)=>{
+        try{
+            await deleteDoc(doc(db,"CreateInventory",id));
+            alert("Medicine deleted successfully")
+            //console.log("document successfully deleted from firestore")
+        }catch(error){
+            alert("Error occur when deleting the medicine",error)
+        }
     }
-    async function fetchMedicineData(){
-        setLoading(true)
-        const result=await GetMedicineData();
-        setMedicineData([...result]);
-        setLoading(false);
+    const deleteHandler=async(index,id)=>{
+        //console.log("delete button clicked");
+        await deleteFromFirestore(id);
+        setInventory((prev)=>prev.filter((_,idx)=>idx!== index));
     }
-    useEffect(()=>{
-        fetchMedicineData();
-    },[]);
+    
+    useEffect(() => {
+        const fetchInventory = async () => {
+            try{
+          const userId = getAuth().currentUser.uid; 
+          //console.log("the user id in inventory",userId)
+          const inventoryRef = collection(db, "CreateInventory");
+          //console.log("the inventory Ref in inventory is ",inventoryRef)
+          const q = query(inventoryRef, where("UserID", "==", userId));
+          //console.log("the data in q are ",q)
+          const querySnapshot = await getDocs(q);
+          //console.log(querySnapshot)
+
+          const inventoryData = [];
+          querySnapshot.forEach((doc) => {
+            inventoryData.push({ id: doc.id, ...doc.data() });
+          });
+    
+          setInventory(inventoryData);
+         // console.log("inventory data are ",inventoryData)
+        //   setHasInventory(inventoryData.length>0)
+        }catch(error){
+            console.log(error)
+        }
+        };
+    
+        fetchInventory();
+        //console.log("the fetched data re ",data)
+      }, []);
   return (
     <div>
     <Navigation/>
-   {loading && <p>Loading...</p>}
-   {/* <div className="table-responsive"> */}
-   <div >
+   {/* {hasInventory===false &&
+   <h1>No any inventory please click on Add button . </h1>
+   } */}
+
+   <div>
    <table class="table caption-top">
         <thead  >
             <tr>
@@ -48,7 +90,8 @@ const Inventory = () => {
             </tr>
         </thead>
         <tbody>
-        {medicineData.map((medicine,index)=>(
+        {inventory.map((medicine,index)=>(
+           // console.log("The array of inventories are ",inventory),
             <tr key={medicine.id}>
                 <td>{medicine.MedicineName}</td>
                 <td>{medicine.Quantity}</td>
@@ -58,20 +101,21 @@ const Inventory = () => {
                 <td>{medicine.MG}</td>
                 <td>{medicine.Company}</td>
                 <td>{medicine.Composition}</td>
-                <td onClick={editHandler}>{<AiFillEdit/>}</td>
-                <td onClick={deleteHandler}>{<AiFillDelete/>}</td>
+                <td onClick={()=>editHandler(medicine)}>{<AiFillEdit/>}</td>
+                <td onClick={()=>deleteHandler(index,medicine.id)}>{<AiFillDelete/>}</td>
             </tr>
         ))}
         </tbody>
     </table>
    </div>
+   
    <Link to ='/inventoryForm' >
    <button type='submit' className="button">Add More</button>
    </Link>
    <Link to ='/createBill' >
    <button type='submit' className='button'>Save Changes</button>
    </Link>
-
+   
     </div>
   )
 }

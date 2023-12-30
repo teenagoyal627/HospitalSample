@@ -5,7 +5,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../Firebase";
 import { getAuth } from "firebase/auth";
 import HomePageNavigation from "../Header/HomePageNavigation";
-import Profile from "./Profile";
 
 function UserDetails() {
   const history = useHistory();
@@ -30,32 +29,29 @@ function UserDetails() {
    
 }
     const emailId=getAuth().currentUser.email;
-    console.log(emailId)
+   // console.log(emailId)
   async function submitHandler(e) {
     e.preventDefault();
     try {
       console.log(getAuth());
       const userId = getAuth().currentUser.uid;
-
+        console.log("the user id in user details form is ",userId);
       // Update the Firestore document with the user details
       await updateDoc(doc(db, "users", userId), {
         Name: name,
-        PhoneNumebr: mob,
-        Image: photo,
-
+        PhoneNumber: mob,
+        Image:photo,
       });
       console.log("User details updated successfully");
     } catch (error) {
       console.log("Error updating user details:", error);
     }
-    
-    
   }
 
   return (
     <div>
     <HomePageNavigation/>
-    <Profile/>
+    {/* <Profile/> */}
     <div className="forms">
       <div>
         <h1 className="heading">User Details</h1>
