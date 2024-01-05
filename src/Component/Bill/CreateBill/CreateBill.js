@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import classes from "./CreateBill.module.css";
 import { AiFillDelete } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../Firebase";
 import Card from "../../UI/Card";
 import Navigation from "../../Header/Navigation";
+import { getAuth } from "firebase/auth";
 function CreateBill1() {
   const history = useHistory();
 
@@ -24,10 +25,25 @@ function CreateBill1() {
   useEffect(() => {
     const fetchMedicineNames = async () => {
       // Fetch medicine names from Firestore collection
-      const querySnapshot = await getDocs(collection(db, "CreateInventory"));
-      const names = querySnapshot.docs.map((doc) => doc.data().MedicineName);
+      try{
+        const userId=getAuth().currentUser.uid;
+        console.log(userId)
+        const createBillRef=collection(db,"CreateInventory")
+        console.log(createBillRef)
+        const q=query(createBillRef,where("UserID","==",userId))
+        console.log(q)
+        const querySnapshot = await getDocs(q);
+         const names = querySnapshot.docs.map((doc) => doc.data().MedicineName);
+         //const quantity= querySnapshot.docs.map((doc) => doc.data().Quantity);
+          setMedicineNames(names);
+
+      }catch(error){
+        console.log(error)
+      }
+      //const querySnapshot = await getDocs(collection(db, "CreateInventory",));
+      //const names = querySnapshot.docs.map((doc) => doc.data().MedicineName);
       // const quantity= querySnapshot.docs.map((doc) => doc.data().Quantity);
-      setMedicineNames(names);
+     // setMedicineNames(names);
       // console.log(quantity)
     };
 
@@ -137,7 +153,7 @@ function CreateBill1() {
 
   const createHandler = async (event) => {
     event.preventDefault();
-      
+      const userId=getAuth().currentUser.uid
     const docRef = await addDoc(collection(db, "CreateBillDetails"), {
       PatientName: patientName,
       MobileNumber: mobileNumber,
@@ -145,6 +161,7 @@ function CreateBill1() {
       HospitalName: hospitalName,
       MedicineEntries: medicineData,
       Date: currentDate,
+      UserID:userId
     });
     console.log("the id of create bill ",docRef.id);
     history.replace("/allBill");

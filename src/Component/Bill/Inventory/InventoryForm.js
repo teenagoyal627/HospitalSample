@@ -7,153 +7,142 @@ import classes from "./InventoryForm.module.css";
 import Navigation from "../../Header/Navigation";
 import { getAuth } from "firebase/auth";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+
 function InventoryForm() {
-  const [medicineName, setMedicineName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [mfgDate, setMfgDate] = useState("");
-  const [expireDate, setExpireDate] = useState("");
-  const [mg, setMg] = useState("");
-  const [company, setCompany] = useState("");
-  const [composition, setComposition] = useState("");
   const history = useHistory();
+  const location = useLocation();
+  const { inventoryData } = location.state || {};
+  console.log("the inventory form data is  ", inventoryData)
 
-  const location=useLocation();
-  const {inventoryData}=location.state || {};
-   console.log("the inventory form data is ",inventoryData)
+  const [formData, setFormData] = useState({
+    medicineName: "",
+    quantity: "",
+    price: "",
+    mfgDate: "",
+    expireDate: "",
+    mg: "",
+    company: "",
+    composition: "",
+  });
 
-//    const [formData,setFormData]=useState({
-//     medicineName:'',
-//     quantity:'',
-//     price:'',
-//     mfgDate:'',
-//     expireDate:'',
-//     mg:'',
-//     company:'',
-//     composition:'',
-// })
+  useEffect(()=>{
+    const fetchInventory=async()=>{
+      if(inventoryData){
+        try{
+          const inventoryDocRef =doc(db,'CreateInventory',inventoryData.id);
+          const inventoryDocSnap=await getDoc(inventoryDocRef)
+  
+          if(inventoryDocSnap.exists()){
+            const data=inventoryDocSnap.data();
+            setFormData({
+              medicineName:data.MedicineName,
+              quantity:data.Quantity,
+              price:data.Price,
+              mfgDate:data.MFGDate,
+              expireDate:data.ExpireDate ,
+              mg:data.MG,
+              company:data.Company,
+              composition:data.Composition
 
-// useEffect(()=>{
-//   const fetchInventory=async()=>{
-//     if(inventoryData){
-//       try{
-//         const inventoryDocRef =doc(db,'CreateInventory',inventoryData.id);
-//         const inventoryDocSnap=await getDoc(inventoryDocRef);
+            })
+            // console.log(inventoryDocSnap.data().MedicineName)
+            // console.log(inventoryData.MedicineName)
+          }else{
+            console.log('Document not found')
+          }
+        }catch(error){
+          console.log("Error fetching inventory data: ",error)
+        }
+      }
+    }
+    fetchInventory();
+  },[inventoryData])
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-//         if(inventoryDocSnap.exists()){
-//           setFormData(inventoryDocSnap.data());
-//         }else{
-//           console.log('Document not found')
-//         }
-//       }catch(error){
-//         console.log("Error fetching inventory data: ",error)
-//       }
-//     }
-//   }
-//   fetchInventory();
-//   console.log(fetchInventory)
-// },[inventoryData])
-
-// const handleChange =(e)=>{
-//   const{name,value}=e.target;
-//   setFormData((prevData)=>({
-//       ...prevData,
-//       [name]:value,
-//   }))
-// }
   const AddHandler = async (e) => {
     e.preventDefault();
-  if(inventoryData){
-    const inventoryDocRef=doc(db,"CreateInventory",inventoryData.id)
-    try{
-      await updateDoc(inventoryDocRef,{
-        MedicineName: medicineName,
-        Quantity: quantity,
-        Price: price,
-        MFGDate: mfgDate,
-        ExpireDate: expireDate,
-        MG: mg,
-        Company: company,
-        Composition: composition,
-      })
-    
-      alert("Successfully  Medicines  added in stock")
-      history.replace('/inventory')
-      setMedicineName("");
-      setQuantity("");
-      setPrice("");
-      setMfgDate("");
-      setExpireDate("");
-      setMg("");
-      setCompany("");
-      setComposition("");
-    } catch{
-      alert("Please fill all and correct medicines data")
-    }
-  }else{
 
-    try {
-      const userId=getAuth().currentUser.uid;
-      console.log(userId)
-     const dataRef= await addDoc(collection(db, "CreateInventory"), {
-        MedicineName: medicineName,
-        Quantity: quantity,
-        Price: price,
-        MFGDate: mfgDate,
-        ExpireDate: expireDate,
-        MG: mg,
-        Company: company,
-        Composition: composition,
-        UserID:userId
-      });
-      alert("Successfully  Medicines  added in stock")
+    if (inventoryData) {
+      const inventoryDocRef = doc(db, "CreateInventory", inventoryData.id);
+      try {
+        await updateDoc(inventoryDocRef, {
+          MedicineName: formData.medicineName,
+          Quantity: formData.quantity,
+          Price: formData.price,
+          MFGDate: formData.mfgDate,
+          ExpireDate: formData.expireDate,
+          MG: formData.mg,
+          Company: formData.company,
+          Composition: formData.composition,
+        });
+
+        alert("Successfully Medicines updated in the stock");
+        history.replace("/inventory");
+      } catch {
+        alert("Please fill all and correct medicines data");
+      }
+    } else {
+      // This is an add operation....
+      try {
+        const userId = getAuth().currentUser.uid;
+
+        const dataRef = await addDoc(collection(db, "CreateInventory"), {
+          MedicineName: formData.medicineName,
+          Quantity: formData.quantity,
+          Price: formData.price,
+          MFGDate: formData.mfgDate,
+          ExpireDate: formData.expireDate,
+          MG: formData.mg,
+          Company: formData.company,
+          Composition: formData.composition,
+          UserID: userId,
+        });
+        alert("Successfully  Medicines  added in stock")
       history.replace('/inventory')
       console.log(dataRef)
       console.log(dataRef.id)
-      setMedicineName("");
-      setQuantity("");
-      setPrice("");
-      setMfgDate("");
-      setExpireDate("");
-      setMg("");
-      setCompany("");
-      setComposition("");
-    } catch{
-      alert("Please fill all and correct medicines data")
+      } catch {
+        alert("Please fill all and correct medicines data");
+      }
     }
-  }
-    
   };
+
   return (
     <div>
-      <Navigation/>
-   
-    <Card>
-      <form className={classes.form} onSubmit={AddHandler}>
-        <div>
-          <h1 className={classes.heading}>Inventory Form</h1>
-        </div>
-        <div className={classes.control}>
-          <label>Medicine Name</label>
-          <input
-            type="text"
-            required
-            id="medicineName"
-            value={medicineName}
-            // onChange={handleChange}
-            onChange={(e) => setMedicineName(e.target.value)}
+      <Navigation />
+      <Card>
+        <form className={classes.form} onSubmit={AddHandler}>
+          <div>
+            <h1 className={classes.heading}>Inventory Form</h1>
+          </div>
+          <div className={classes.control}>
+            <label>Medicine Name</label>
+            <input
+              type="text"
+              required
+              id="medicineName"
+              value={formData.medicineName}
+              onChange={handleChange}
+              name="medicineName"
+            />
+          </div>
 
-          />
-        </div>
-
-        <div className={classes.control}>
+          <div className={classes.control}>
           <label>Quantity</label>
           <input
             type="number"
             required
             id="quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            value={formData.quantity}
+            onChange={handleChange}
+            name="quantity"
           />
         </div>
         <div className={classes.control}>
@@ -163,8 +152,9 @@ function InventoryForm() {
             min="1"
             required
             id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            value={formData.price}
+            onChange={handleChange}
+            name="price"
           />
         </div>
         <div className={classes.control}>
@@ -173,8 +163,9 @@ function InventoryForm() {
             type="date"
             required
             id="mfg"
-            value={mfgDate}
-            onChange={(e) => setMfgDate(e.target.value)}
+            value={formData.mfgDate}
+            onChange={handleChange}
+            name="mfgDate"
           />
         </div>
         <div className={classes.control}>
@@ -183,8 +174,9 @@ function InventoryForm() {
             type="date"
             required
             id="expire"
-            value={expireDate}
-            onChange={(e) => setExpireDate(e.target.value)}
+            value={formData.expireDate}
+            onChange={handleChange}
+            name="expireDate"
           />
         </div>
         <div className={classes.control}>
@@ -193,8 +185,9 @@ function InventoryForm() {
             type="number"
             required
             id="mg"
-            value={mg}
-            onChange={(e) => setMg(e.target.value)}
+            value={formData.mg}
+            onChange={handleChange}
+            name="mg"
           />
         </div>
         <div className={classes.control}>
@@ -203,8 +196,9 @@ function InventoryForm() {
             type="text"
             required
             id="campany"
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
+            value={formData.company}
+            onChange={handleChange}
+            name="company"
           />
         </div>
         <div className={classes.control}>
@@ -213,15 +207,17 @@ function InventoryForm() {
             type="text"
             required
             id="composition"
-            value={composition}
-            onChange={(e) => setComposition(e.target.value)}
+            value={formData.composition}
+            onChange={handleChange}
+            name="composition"
           />
         </div>
-        
-        <button type="submit">Save</button>
-      </form>
-    </Card>
+
+          <button type="submit">Save</button>
+        </form>
+      </Card>
     </div>
   );
 }
+
 export default InventoryForm;
