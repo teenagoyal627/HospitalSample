@@ -168,33 +168,29 @@ const AllBill = () => {
       )}
       {/* this is for show the model */}
       {medicineDialog.visible && (
+        <React.Fragment>
         <Dialog
-          fullScreen
-          open={medicineDialog.visible}
-          onClose={handleClose}
-          TransitionComponent={Transition}
-        >
-        <div>
-          <AppBar sx={{ position: "relative" }}>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={handleClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconButton>
-              <Button
-                sx={{ ml: 1 }}
-                variant="h6"
-                component="div"
-                onClick={handlePrint}
-              >
-                Print
-              </Button>
-              <div>
-                <Button
+        fullScreen
+        open={medicineDialog.visible}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+      >
+       {/* <AppBar sx={{ position: 'relative' }} style={{backgroundColor:"green",height:"2rem",marginTop:".3rem"}}> */}
+          <Toolbar style={{backgroundColor:"skyblue",height:"5rem"}}>
+            <IconButton
+            style={{marginRight:"2rem"}}
+              edge="start"
+              color="black"
+              onClick={handleClose}
+              aria-label="close"
+            >
+               <CloseIcon />
+            </IconButton>
+
+            <Button style={{backgroundColor:"green",marginRight:"3rem",width:"8rem",fontSize:"1rem",fontWeight:"bold"}} autoFocus color="inherit" onClick={handlePrint}>
+              Print
+            </Button>
+            <Button style={{backgroundColor:"green",marginRight:"3rem",width:"8rem",fontSize:"1rem",fontWeight:"bold"}}
                   color="inherit"
                   onClick={() => {
                     showShopData();
@@ -202,20 +198,18 @@ const AllBill = () => {
                 >
                   Download
                 </Button>
-              </div>
-            </Toolbar>
-          </AppBar>
-          </div>
-
+                </Toolbar>
+          {/* </AppBar> */}
           <DialogBoxContent
             records={records}
             currentUser={currentUser}
             bill={bill}
             medicineDialog={medicineDialog}
           />
-        </Dialog>
-        )
-        }
+          </Dialog>
+        </React.Fragment>
+      )}
+        
       {showShopDetails && (
         <PdfContent
           pdfContentRef={pdfContentRef}

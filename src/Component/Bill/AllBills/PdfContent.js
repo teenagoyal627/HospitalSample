@@ -51,15 +51,17 @@ const PdfContent = ({
               </div>
             ))}
         </div>
-
-        <div className="table-responsive">
+ 
+        <div className="table-responsive" style={{marginLeft:"2rem",width:"55rem"}} >
           <table className="table">
             <thead>
-              <tr>
-                <th>Medicine Name</th>
-                <th> Quantity</th>
-                <th>Unit Price</th>
-                <th>Price</th>
+            <tr>
+            <th>Medicine Name</th>
+              <th> Quantity</th>
+              <th>Duration</th>
+              <th>Unit Price</th>
+              <th>Price</th>
+              <th>Instructions</th>
               </tr>
             </thead>
             <tbody>
@@ -70,16 +72,19 @@ const PdfContent = ({
                       <td>{medicine.medicineName}</td>
                       {console.log(medicine.medicineName)}
                       <td>{medicine.quantity}</td>
+                      <td>{medicine.duration} days</td>
                       <td>{medicine.price/medicine.quantity}</td>
                       <td>{medicine.price}</td>
+                      <td>{medicine.instructions}</td>
                     </tr>
                   )
                 )}
             </tbody>
           </table>
         </div>
-        <hr />
-        <h5 className={classes.totalAmount}>Total Amount: {totalAmount()}</h5>
+        <hr style={{marginLeft:"2rem",width:"55rem"}}/>
+      <h5 className={classes.totalAmount}>Total Amount: {totalAmount()}</h5>
+      <hr style={{marginLeft:"2rem",width:"55rem"}}/>
       </form>
     </div>
   );

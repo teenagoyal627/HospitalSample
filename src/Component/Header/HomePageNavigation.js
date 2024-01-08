@@ -14,7 +14,7 @@ const HomePageNavigation = () => {
                 <p style={{color:"white"}}>Click here to Login/Signup</p>
               </li> */}
               <li>
-                <a href="/login" className="link" style={{ marginRight: "30rem" }} >
+                <a href="/login" className="link"  style={{ position: "relative", right: "0", marginRight: "30px", }} >
                   Login
                 </a>
               </li>

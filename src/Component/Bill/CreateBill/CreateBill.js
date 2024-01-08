@@ -4,9 +4,9 @@ import { AiFillDelete } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
 import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../Firebase";
-import Card from "../../UI/Card";
 import Navigation from "../../Header/Navigation";
 import { getAuth } from "firebase/auth";
+import Bill from "../../UI/Bill";
 function CreateBill1() {
   const history = useHistory();
 
@@ -16,7 +16,7 @@ function CreateBill1() {
   const [hospitalName, setHospitalName] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [medicineData, setMedicineData] = useState([
-    { medicineName: "", quantity: "", price: "" },
+    { medicineName: "", quantity: "", price: "" ,duration:"",instructions:""},
   ]);
   const [medicineNames, setMedicineNames] = useState([]);
   const [warning,setWarning]=useState(null)
@@ -58,7 +58,7 @@ function CreateBill1() {
   const addFields = () => {
     setMedicineData((prev) => [
       ...prev,
-      { medicineName: "", quantity: "", price: "" },
+      { medicineName: "", quantity: "", price: "", duration:"", instructions:"" },
     ]);
     // This is the new array that will replace the previous state. The spread operator ...prev is used to create a new array with all the elements from the previous state.
     
@@ -170,7 +170,7 @@ function CreateBill1() {
     setMobileNumber("");
     setDoctorName("");
     setHospitalName("");
-    setMedicineData([{ medicineName: "", quantity: "", price: "" }]);
+    setMedicineData([{ medicineName: "", quantity: "", price: "",duration:"",instructions:"" }]);
   };
   // const filterHandler=async(index, field, value) => {
   //   const updatedInputFields = [...medicineData];
@@ -188,7 +188,7 @@ function CreateBill1() {
   return (
     <div>
       <Navigation />
-      <Card>
+      <Bill>
         <p className={classes.date}>Date: {currentDate}</p>
         <div>
           <h1 className={classes.heading}>Create Bill</h1>
@@ -275,6 +275,24 @@ function CreateBill1() {
                     handleTableChange(index, "price", e.target.value)
                   }
                 />
+                <input
+                  type="text"
+                  style={{padding:".2rem",margin:".2rem",width:"13rem"}}
+                  placeholder="Instructions"
+                  value={input.instructions}
+                  onChange={(e) =>
+                    handleTableChange(index, "instructions", e.target.value)
+                  }
+                />
+                <input
+                  type="number"
+                  style={{padding:".2rem",margin:".2rem",width:"13rem"}}
+                  placeholder="Duration"
+                  value={input.duration}
+                  onChange={(e) =>
+                    handleTableChange(index, "duration", e.target.value)
+                  }
+                />
                 <p
                   className={classes.remove}
                   onClick={() => removeFields(index)}
@@ -286,7 +304,7 @@ function CreateBill1() {
           ))}
           {warning && <p className={classes.warning}>{warning}</p>}
           <button
-            style={{ marginTop: "1rem", width: "10rem" }}
+            style={{ marginTop: "1rem", width: "10rem",marginLeft:".2rem" }}
            type="button" onClick={addFields}>
             Add more
           </button>
@@ -297,7 +315,7 @@ function CreateBill1() {
             Create Bill
           </button>
         </form>
-      </Card>
+      </Bill>
       {/* <Sample/> */}
     </div>
   );

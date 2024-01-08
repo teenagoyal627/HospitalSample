@@ -26,6 +26,7 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
             <div key={filterdata.id}>
               <h3>Medical Invoice</h3>
               <div className={classes.container}>
+
                 <div className={classes.leftData}>
                   <p>Date: {filterdata.Date}</p>
                   <p>Hospital Name: {filterdata.HospitalName}</p>
@@ -40,15 +41,17 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
             </div>
           ))}
       </div>
-
-      <div className="table-responsive">
-        <table className="table">
+       <br/><br/>
+      <div className="table-responsive" style={{marginLeft:"2rem",width:"55rem"}} >
+        <table className="table" >
           <thead>
-            <tr>
+            <tr style={{backgroundColor:"skyblue"}}>
               <th>Medicine Name</th>
               <th> Quantity</th>
+              <th>Duration</th>
               <th>Unit Price</th>
               <th>Price</th>
+              <th>Instructions</th>
             </tr>
           </thead>
           <tbody>
@@ -64,16 +67,19 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
                   <tr key={medicine.id}>
                     <td>{medicine.medicineName}</td>
                     <td>{medicine.quantity}</td>
+                    <td>{medicine.duration} days</td>
                     <td>{medicine.price / medicine.quantity}</td>
                     <td>{medicine.price}</td>
+                    <td>{medicine.instructions}</td>
                   </tr>
                 );
               })}
           </tbody>
         </table>
       </div>
-      <hr />
+      <hr style={{marginLeft:"2rem",width:"55rem"}}/>
       <h5 className={classes.totalAmount}>Total Amount: {totalAmount()}</h5>
+      <hr style={{marginLeft:"2rem",width:"55rem"}}/>
     </form>
   );
 };

@@ -23,8 +23,8 @@
     margin-bottom: 0.1rem;
 }
 .control input{
-    padding: 0.1rem;
-    width: 35rem;
+    padding: 0.2rem;
+    width: 45rem;
     border-radius: 0.5rem;
     font-size: 0.9rem;
     margin-bottom: 0.1rem;
@@ -33,10 +33,10 @@
 }
 
 .form button{
-        width: 40rem;
-        padding: 0.1rem;
-        margin-top: .5rem;
-        margin-left: .2rem;
+        width: 30rem;
+        padding: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 20rem;
         border-radius: 0.5rem;
         font-size: 1.1rem;
         color: rgb(24, 23, 23);
@@ -58,7 +58,7 @@
     cursor: pointer;
 }
 .medicalData{
-    display: grid;
+    display: inline-flex;
     grid-template-columns: repeat(4,1fr);
     width: 3rem;
     
