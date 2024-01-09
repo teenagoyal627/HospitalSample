@@ -11,7 +11,7 @@ function Home() {
   }, []);
   return (
     <div>
-     <HomePageNavigation/>
+      <HomePageNavigation />
       <header>
         <div className="header-section flex container">
           <div className="header-left">
@@ -24,34 +24,27 @@ function Home() {
             </button>
           </div>
           <div className="header-right">
-            <img src="Images/1.jpg" alt="Home page" />
+            <img src="Images/1.jpg" alt="Home page"/>
           </div>
         </div>
       </header>
-      
+
       <section className="features-section">
         <div className="container">
           <div className="features-header flex">
             <h4 className="features-heading-text">One platform, endless functionality.</h4>
           </div>
-           <hr/>
+          <hr />
           <div className="features-area flex">
-            <a href="/signup" className="features-card" style={{ padding: "2rem" , background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQgIeptiR_CMtAGiO4x8Knironnq-rID41KQ&usqp=CAU)"}}>
+            <a href="/signup" className="features-card" style={{ padding: "2rem", background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQgIeptiR_CMtAGiO4x8Knironnq-rID41KQ&usqp=CAU)" }}>
               <h5 className="features-text">Empower Your Business, Share Your Story: Seamless Shop Detail Entry!</h5>
             </a>
 
             <a href="/signup"
-             className="features-card" style={{ maxWidth:"100%", background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://c8.alamy.com/comp/2AP4BNB/many-colorful-medicines-drugs-as-a-medicine-background-texture-2AP4BNB.jpg)" }}
+              className="features-card" style={{ maxWidth: "100%", background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://c8.alamy.com/comp/2AP4BNB/many-colorful-medicines-drugs-as-a-medicine-background-texture-2AP4BNB.jpg)" }}
             >
               <h5 className="features-text">Effortless Inventory Management: Peek into Your Stock, Anytime, Anywhere.</h5>
             </a>
-
-
-            {/* <a href="/signup" className="features-card" style={{ background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfr7ciM1dAShd_vQr4bg9MQwaTDeQl0u_8UkejjJj6nRAT97YaN_YaOq3vRimkYbFsBI8&usqp=CAU)", }}
-            >
-              <h5 className="features-text">Billing Made Beautiful: Simplify Patient Invoicing, Amplify Success.</h5>
-            </a> */}
-
             <a href="/signup" className="features-card" style={{ background: "linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.8)),url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1AtMRiFzfBRpmFYAWVw1zm6XIi7xgblmNEA&usqp=CAU" }}>
               <h5 className="features-text">Billing at Your Fingertips: View, Verify, Print – Your Patients, Your Way.</h5>
             </a>
@@ -68,10 +61,11 @@ function Home() {
             <div className="card-body">
               <p className="card-text">
                 {" "}
-                It is a system enabling hospitals to manage information and in this
-                we can create bill,we can see all bills of our shop and also see the
-                stoke of medicines.if you wants to use this application click on
-                Signup button.
+                It is a system that allows a shop to handle information.
+                we can write bills in it, view all of our invoices, and 
+                examine the stock of medicines.You click the Signup button in 
+                order to utilize this dashboard
+                
               </p>
               <button className="button">
                 <Link to="/signup" style={{ color: "black", textDecoration: "none" }}>

@@ -8,3 +8,9 @@
     margin: 2rem auto;
 
 }
+@media screen and (max-width:750px) {
+    .bill{
+        width: 27rem;
+    }
+    
+}

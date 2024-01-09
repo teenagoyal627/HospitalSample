@@ -55,6 +55,7 @@
 .links:hover{
         text-decoration: none;
         cursor: pointer;
+        color: #1b3e5a;
 }
 .messages{
     display: flex;
@@ -77,4 +78,30 @@
     color: black;
     width: fit-content;
     height: 50px;
+    }
+    .password-container{
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .password-toggle{
+        cursor: pointer;
+        position: absolute;
+        right: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    @media screen and (max-width:750px) {
+        .form{
+            width: 27rem;
+        }
+        .form input{
+            width: 20rem;
+        }
+        .form button{
+            width: 20rem;
+        }
+        .password-toggle{
+            right:5rem
+        }
     }

@@ -144,11 +144,7 @@ const Signup = (shopId) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div
-         style={{
-          display:"flex",
-          alignItems:"center"}}
-         >
+        <div className="password-container">
         <input
           type={visible ? "text" :"password"}
           placeholder="Enter password"
@@ -156,16 +152,10 @@ const Signup = (shopId) => {
           autoComplete="new-password"
           required
           value={password}
-          style={{width:"30rem",paddingRight: "2rem" }}
           onChange={(e) => setPassword(e.target.value)}
-        ></input> 
-        <div style={{
-          cursor:"pointer",
-          position:"absolute",
-          marginBottom:"1rem",
-          right:"17rem",
-         
-          }} 
+        />
+        <div 
+        className="password-toggle"
         onClick={()=>setVisible(!visible)}
         >
           {visible ? <AiOutlineEye /> :  <AiOutlineEyeInvisible />}

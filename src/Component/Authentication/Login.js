@@ -98,26 +98,17 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
           />
-          <div style={{
-          display:"flex",
-          alignItems:"center"}}>
+          <div className="password-container">
             <input
               type={visible ? "text" : "password"}
               placeholder="Enter Password"
               id="password"
               required
               value={password}
-              style={{width:"30rem",paddingRight: "2rem" }}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="off"
             />
-            <div
-              style={{
-                cursor: "pointer",
-                position: "absolute",
-                marginBottom: "1rem",
-                right: "17rem",
-              }}
+            <div className="password-toggle"
               onClick={() => {
                 setVisible(!visible);
               }}
@@ -133,11 +124,12 @@ const Login = () => {
             Google
           </button>
           <h5>
-            New account
-            <Link to="/signup" className={classes.links}>
-              Signup
-            </Link>
-          </h5>
+          New account ?
+          <a href="/signup" className={classes.links}>
+            Signup
+            {console.log("signup button is clicked ")}
+          </a>
+        </h5>
         </form>
       </div>
     </div>

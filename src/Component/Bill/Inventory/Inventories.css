@@ -14,3 +14,15 @@
     background-color: rgb(157, 165, 232);
     border-color: rgb(157, 165, 232);
 }
+
+/* table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+  }
+  table.table-fit thead th,
+  table.table-fit tbody td,
+  table.table-fit tfoot th,
+  table.table-fit tfoot td {
+    width: auto !important;
+  } */
+

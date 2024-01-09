@@ -44,3 +44,15 @@ form button:hover,
     background-color: rgb(157, 165, 232);
     border-color: rgb(157, 165, 232);
 }
+@media screen  and (max-width:750px){
+    .form{
+        width: 27rem;
+    }
+    .form input{
+        width: 20rem;
+    }
+    .form button{
+        width: 20rem;
+    }
+    
+}

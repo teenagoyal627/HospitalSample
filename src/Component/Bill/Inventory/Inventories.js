@@ -68,19 +68,16 @@ const Inventory = () => {
   return (
     <div>
     <Navigation/>
-   {/* {hasInventory===false &&
-   <h1>No any inventory please click on Add button . </h1>
-   } */}
-
-   <div>
-   <table class="table caption-top">
-        <thead  >
+   
+   <div class="table-responsive">
+   <table class="table caption-top ">
+        <thead>
             <tr>
                 <th>MedicineName</th>
                 <th>Quantity</th>
-                <th>Price(per_Medicine)</th>
-                <th>ManufactureDate</th>
-                <th>ExpireDate</th>
+                <th>Price(per_medicine)</th>
+                <th>MfgDate</th>
+                <th>ExpDate</th>
                 <th>MG</th>
                 <th>Company</th>
                 <th>Composition</th>
@@ -91,7 +88,6 @@ const Inventory = () => {
         </thead>
         <tbody>
         {inventory.map((medicine,index)=>(
-           // console.log("The array of inventories are ",inventory),
             <tr key={medicine.id}>
                 <td>{medicine.MedicineName}</td>
                 <td>{medicine.Quantity}</td>

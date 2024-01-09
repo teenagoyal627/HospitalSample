@@ -18,6 +18,7 @@ function Shop() {
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [error, setError] = useState(false)
   const [address, setAddress] = useState({
     //store the addresss in the form of object.
     streetAddress: "",
@@ -26,6 +27,15 @@ function Shop() {
     postalCode: "",
     country: "",
   });
+
+  const validation = () => {
+    const isValidPhoneNumber = /^\d{10}$/.test(mobileNumber)
+    if (!isValidPhoneNumber) {
+      setError(true)
+    } else {
+      setError(false)
+    }
+  }
   const addressHandler = (e) => {
     const { name, value } = e.target;
     setAddress((prev) => ({
@@ -41,11 +51,17 @@ function Shop() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    setShowConfirmationModal(true);
+    console.log("submit button click")
+    validation();
+
+    if (!error) {
+      setShowConfirmationModal(true)
+      
+    
     try {
       const userId = getAuth().currentUser.uid;
       console.log(userId);
-     addDoc(collection(db, "ShopDetails"), {
+      addDoc(collection(db, "ShopDetails"), {
         shopName: shopName,
         //image: downloadURL,
         Name: name,
@@ -63,7 +79,7 @@ function Shop() {
       alert("Please fill all and correct medicines data");
     }
   };
-
+  }
   const handleConfirm = () => {
     setShowConfirmationModal(false);
     history.push("/inventory");
@@ -103,10 +119,7 @@ function Shop() {
               onChange={(e) => setShopName(e.target.value)}
             />
           </div>
-          {/* <div className={classes.control}>
-            <label htmlFor="name">Shop Image</label>
-            <input type="file" required onChange={handleFileChange} />
-          </div> */}
+          
           <div className={classes.control}>
             <label htmlFor="name">Owner Name</label>
             <input
@@ -179,6 +192,13 @@ function Shop() {
           </div>
           <button type="submit">Submit</button>
         </form>
+        <hr />
+        {error && (
+          <div style={{ color: "red" }}>
+            <p>Enter a valid 10 digit number </p>
+          </div>
+        )}
+
         {showConfirmationModal && (
           <div
             className="modal fade show"
@@ -201,7 +221,8 @@ function Shop() {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <p> content dalna hai</p>
+                  <p>  Thank you for providing your shop details. You can now navigate to the
+                    Inventory page to manage your products and inventory.</p>
                 </div>
                 <div className="modal-footer">
                   <button

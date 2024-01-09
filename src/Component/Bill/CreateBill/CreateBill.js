@@ -20,6 +20,7 @@ function CreateBill1() {
   ]);
   const [medicineNames, setMedicineNames] = useState([]);
   const [warning,setWarning]=useState(null)
+  const[error,setError]=useState(false)
   //this is for fetch the data from firesotre when the page is render
  
   useEffect(() => {
@@ -63,6 +64,15 @@ function CreateBill1() {
     // This is the new array that will replace the previous state. The spread operator ...prev is used to create a new array with all the elements from the previous state.
     
   };
+
+  const validation = () => {
+    const isValidPhoneNumber = /^\d{10}$/.test(mobileNumber)
+    if (!isValidPhoneNumber) {
+      setError(true)
+    } else {
+      setError(false)
+    }
+  }
 
   const removeFields = (index) => {
     setMedicineData((prev) => prev.filter((_, idx) => idx !== index));
@@ -153,7 +163,9 @@ function CreateBill1() {
 
   const createHandler = async (event) => {
     event.preventDefault();
-      const userId=getAuth().currentUser.uid
+    validation()
+    if(error){
+    const userId=getAuth().currentUser.uid
     const docRef = await addDoc(collection(db, "CreateBillDetails"), {
       PatientName: patientName,
       MobileNumber: mobileNumber,
@@ -171,7 +183,8 @@ function CreateBill1() {
     setDoctorName("");
     setHospitalName("");
     setMedicineData([{ medicineName: "", quantity: "", price: "",duration:"",instructions:"" }]);
-  };
+  }
+};
   // const filterHandler=async(index, field, value) => {
   //   const updatedInputFields = [...medicineData];
   //   updatedInputFields[index][field] = value;
@@ -309,12 +322,16 @@ function CreateBill1() {
             Add more
           </button>
 
-          <button
-          //  style={{ marginTop: "1rem", width: "30rem" }}
-           >
+          <button>
             Create Bill
           </button>
         </form>
+        {error && (
+          <div style={{ color: "red" }}>
+            <p>Enter a valid 10 digit number </p>
+          </div>
+        )}
+
       </Bill>
       {/* <Sample/> */}
     </div>
