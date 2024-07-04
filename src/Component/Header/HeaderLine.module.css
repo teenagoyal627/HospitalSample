@@ -10,16 +10,9 @@
     padding:0 3rem;
 
 }
-.logo
-{
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: rgb(243, 243, 243);
-}
-
-
 .header ul{
     list-style:none;
+    flex-flow: row  nowrap;
     margin: 0%;
     padding: 0;
     display: flex;
@@ -27,8 +20,7 @@
 }
 .header li{
     margin-left: 3rem;
-     /* color: black;
-    text-decoration: none; */
+    
 }
 .header a{
     text-decoration: none;
@@ -40,3 +32,19 @@
     text-decoration: none;
     color:rgb(157, 165, 232);}
 
+@media(max-width:800px) {
+    .header ul{
+        flex-flow: column nowrap;
+        background-color:#1b3e5a ;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 350px;
+        padding-top: 3.5rem;
+        /* display: none; */
+    }
+    .header li{
+        padding: 15px 10px;
+    }
+}

@@ -16,6 +16,7 @@ import DialogBoxContent from "./DialogBoxContent";
 import PdfContent from "./PdfContent";
 import useShopDataFetch from "./ShopDataFetch";
 import SearchDialog from "./SearchBox";
+import HeaderLine from "../../Header/HeaderLine2";
 // import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 // import algoliasearch from "algoliasearch/lite";
 

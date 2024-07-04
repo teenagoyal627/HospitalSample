@@ -53,11 +53,11 @@ function Shop() {
     e.preventDefault();
     console.log("submit button click")
     validation();
-
+          
     if (!error) {
       setShowConfirmationModal(true)
-      
-    
+    }else{
+      setShowConfirmationModal(false)
     try {
       const userId = getAuth().currentUser.uid;
       console.log(userId);

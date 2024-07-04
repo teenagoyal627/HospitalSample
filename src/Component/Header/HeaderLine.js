@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import style from './HeaderLine.module.css'
+import { useState } from "react";
 
 function HeaderLine() {
-
+   
     return (
 
         <header className={style.header}>
-             <div className="nav-bar">
+             <div >
           <a href="/" className="logo">
             <h1>Medical Shop Managment System</h1>
+           
           </a>
           </div>
             <nav>

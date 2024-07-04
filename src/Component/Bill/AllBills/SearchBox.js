@@ -52,18 +52,17 @@ const SearchDialog = ({
   console.log(searchQuery);
   return (
     <InstantSearch
+    className={classes.instantSearch}
       searchClient={searchClient}
       indexName="AllBills"
     >
-      <div className={classes.searchContainer}>
+    <div className={classes.search} >
         <SearchBox
           translations={{ placeholder: "Search Bill by Patient, Hospital & Doctor Name" }}
-          className={classes.search}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-      </div>
-
+        </div>
       {searchQuery.length > 0 && (
         <table className="table">
           <thead>
@@ -81,6 +80,7 @@ const SearchDialog = ({
               searchCurrentUser={searchCurrentUser} 
                currentUser={currentUser}
                setCurrentUser={setCurrentUser} 
+               className={classes.hit}
               />
             {console.log('search currentUser according to algolia search' ,searchCurrentUser)}
             {console.log('currentUser according to algolia search' ,currentUser)}

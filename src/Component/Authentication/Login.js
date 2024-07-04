@@ -49,7 +49,7 @@ const Login = () => {
           const user = userCredential.user.uid;
           console.log(user);
           alert("Successfully Login");
-          history.replace("/shop");
+          history.replace("/inventory");
           setEmail("");
           setPassword("");
         })
@@ -71,7 +71,7 @@ const Login = () => {
         const user = result.user;
         console.log(token, user);
         alert("Successfully Login");
-        history.replace("/shop");
+        history.replace("/inventory");
         setEmail("");
         setPassword("");
       })

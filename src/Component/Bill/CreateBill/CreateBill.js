@@ -203,7 +203,7 @@ function CreateBill1() {
       <Navigation />
       <Bill>
         <p className={classes.date}>Date: {currentDate}</p>
-        <div>
+      <hr/>  <div>
           <h1 className={classes.heading}>Create Bill</h1>
         </div>
         <form className={classes.form} onSubmit={createHandler}>

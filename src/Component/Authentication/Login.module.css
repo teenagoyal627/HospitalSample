@@ -85,23 +85,24 @@
         align-items: center;
     }
     .password-toggle{
-        cursor: pointer;
+        /* cursor: pointer; */
         position: absolute;
         right: 3rem;
         margin-bottom: 1rem;
     }
 
-    @media screen and (max-width:750px) {
+    @media screen and (max-width:800px) {
         .form{
-            width: 27rem;
+            width: 23rem;
         }
         .form input{
             width: 20rem;
         }
         .form button{
-            width: 20rem;
+            width: 19rem;
         }
         .password-toggle{
-            right:5rem
+            cursor: pointer;
+            right:1rem
         }
     }

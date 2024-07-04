@@ -1,20 +1,17 @@
-.ais-SearchBox-form--modifier{
-  /* background-color: pink; */
-  font-weight: 100;
-}
-.searchContainer{
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
-  text-align: center;
-}
 .search{
-    padding: 8px;
+    padding: 12px;
     border: 1px solid black;
+    background-color: rgb(157, 157, 157);
     border-radius: 4px;
-     margin-bottom: 2rem;
+     margin: 2rem auto 2rem auto;
      width: 38rem;
+}
+
+.ais-SearchBox-form{
+  background-color: black;
+}
+.ais-SearchBox-input{ 
+   background-color: red;
 }
 .buttons{
     width: 12rem;
@@ -78,4 +75,11 @@
 }
 .shopData{
   background-color: red;
+}
+ 
+@media screen and (max-width:800px) {
+  .search{
+    width: 30rem;
+  }
+  
 }

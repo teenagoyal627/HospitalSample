@@ -182,7 +182,7 @@ header{
     }
     .features-card{
         flex-direction: column;
-        background-color: red;
+        /* background-color: red; */
     }
     .header-section{
         gap: 2px;

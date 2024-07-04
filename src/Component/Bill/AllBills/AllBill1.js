@@ -173,17 +173,7 @@ const AllBill = () => {
   return (
     <div>
       <Navigation />
-      {/* <ShopDataFetch/> */}
-      <div className={classes.searchContainer}>
-        <input
-          type="text"
-          placeholder="search Bill by Patient name"
-          className={classes.search}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
+    
       {loading && <p>Loading..</p>}
       <div className="table-responsive">
         <table className="table">
