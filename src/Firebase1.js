@@ -9,12 +9,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "your api key",
-  authDomain: "your auth domain",
-  projectId: "your project id",
-  storageBucket: "your storage bucket",
-  messagingSenderId: "messaging sender id ",
-  appId: "app id "
+  apiKey: "AIzaSyA27NqehedpwJ_aKxnCyZaF5U9w7skzvHs",
+  authDomain: "hospital-managment-final.firebaseapp.com",
+  projectId: "hospital-managment-final",
+  storageBucket: "hospital-managment-final.appspot.com",
+  messagingSenderId: "176091692473",
+  appId: "1:176091692473:web:effe3a2d6bfc7f47f8ca68"
 };
 
 // Initialize Firebase
