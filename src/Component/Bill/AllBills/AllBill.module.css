@@ -54,6 +54,7 @@
 
 .leftData {
   width: 50%;
+  margin-left: 5rem;
 }
 
 .rightData {
@@ -71,7 +72,7 @@
   margin-top: 20px;
   font-size: 18px;
   font-weight: bold;
-   margin-left: 40rem;
+   margin-left: 80rem;
 }
 .shopData{
   background-color: red;
@@ -81,5 +82,37 @@
   .search{
     width: 30rem;
   }
+
+  .leftData {
+    width: 50%;
+    margin-left: 5rem;
+  }
+  .totalAmount{
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+     margin-left: 30rem;
+  }
   
+}
+
+
+.messageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh; /* Full viewport height */
+  text-align: center;
+}
+
+.message {
+  background-color: skyblue;
+  padding: 20px;
+  border-radius: 10px;
+  width: 34rem;
+  font-size: 1.2rem;
+}
+
+.centerButton {
+  margin-top: 20px;
 }

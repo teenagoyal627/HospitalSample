@@ -1,6 +1,6 @@
 import { Route} from "react-router"
-import Login from "./Component/Authentication/Login"
-import Signup from "./Component/Authentication/Signup"
+import Login from "./Component/Authentication/Login/Login"
+import Signup from "./Component/Authentication/Signup/Signup"
 import React, {  } from "react"
 import Home from "./Component/Header/Home"
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";

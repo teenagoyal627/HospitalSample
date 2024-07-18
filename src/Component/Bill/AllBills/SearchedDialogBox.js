@@ -4,7 +4,9 @@ const SearchDialogBoxContent = ({ records, searchCurrentUser, bill, currentUser,
     //console.log(searchCurrentUser)
     //console.log("records are ",records)
    // console.log("the current user of allbill",currentUser)
-const totalAmount = () => {
+
+console.log("searcg cyrrebt yser",searchCurrentUser)
+   const totalAmount = () => {
 if (bill.length > 0 && medicineDialog.billIndex !== null) {
   const currentBill = records[medicineDialog.billIndex];
   return currentBill.MedicineEntries.reduce(
@@ -19,6 +21,7 @@ return 0;
 return (
 <form className={classes.form}>
   <div>
+  {console.log(bill)}
     {bill
       .filter((item) =>  item.id === searchCurrentUser)
       .map((filterdata) => 

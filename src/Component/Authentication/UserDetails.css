@@ -15,14 +15,14 @@
 .forms label {
   margin-left: 1rem;
   font-size: 1rem;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.5rem;
 }
 .forms input {
   padding: 0.3rem;
   width: 30rem;
   border-radius: 0.5rem;
   font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   margin-left: 1rem;
   border: 1px solid black;
 }
@@ -43,7 +43,27 @@
   background-color: rgb(157, 165, 232);
   border-color: rgb(157, 165, 232);
 }
-.photo{
-    margin-top: .3rem;
-    margin: auto;
+
+.image-upload-section{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+.image-upload-box{
+  margin-top: 5px;
+  border: 2px dashed black;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  color: black;
+}
+
+.image-preview {
+  max-width: 100%;
+  border-radius: 10px;
+ margin-top: 1rem;
+}
+

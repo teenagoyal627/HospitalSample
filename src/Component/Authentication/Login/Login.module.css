@@ -48,7 +48,6 @@
     text-decoration:none;
     margin-left: .5rem;
     font-size: 1rem;
-    /* background-color: black; */
     color:red;
 }
 
@@ -79,29 +78,29 @@
     width: fit-content;
     height: 50px;
     }
-    .password-container{
+    .passwordContainer{
         position: relative;
         display: flex;
         align-items: center;
     }
-    .password-toggle{
+    .passwordToggle{
         /* cursor: pointer; */
         position: absolute;
         right: 3rem;
         margin-bottom: 1rem;
     }
 
-    @media screen and (max-width:800px) {
+    @media screen and (max-width:600px) {
         .form{
-            width: 23rem;
+            width: 25rem;
         }
         .form input{
-            width: 20rem;
+            width: 22rem;
         }
         .form button{
             width: 19rem;
         }
-        .password-toggle{
+        .passwordToggle{
             cursor: pointer;
             right:1rem
         }

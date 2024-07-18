@@ -32,7 +32,7 @@
     text-decoration: none;
     color:rgb(157, 165, 232);}
 
-@media(max-width:800px) {
+/* @media(max-width:800px) {
     .header ul{
         flex-flow: column nowrap;
         background-color:#1b3e5a ;
@@ -43,8 +43,8 @@
         width: 350px;
         padding-top: 3.5rem;
         /* display: none; */
-    }
+    /* }
     .header li{
         padding: 15px 10px;
     }
-}
+} */

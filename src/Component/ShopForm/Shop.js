@@ -1,5 +1,5 @@
 import { collection, addDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../UI/Card";
 import classes from "./Shop.module.css";
 import { db } from "../../Firebase";
@@ -9,18 +9,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Navigation from "../Header/Navigation";
 
-
 function Shop() {
   const history = useHistory();
   const [shopName, setShopName] = useState("");
-  // const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const [address, setAddress] = useState({
-    //store the addresss in the form of object.
     streetAddress: "",
     city: "",
     state: "",
@@ -28,14 +25,26 @@ function Shop() {
     country: "",
   });
 
-  const validation = () => {
-    const isValidPhoneNumber = /^\d{10}$/.test(mobileNumber)
-    if (!isValidPhoneNumber) {
+  const validatePhoneNumber = () => {
+    const isValidPhoneNumber = /^\d{10}$/.test(mobileNumber);
+    console.log(isValidPhoneNumber)
+    if(!isValidPhoneNumber){
       setError(true)
-    } else {
-      setError(false)
+      setShowConfirmationModal(false)
     }
-  }
+    else{
+      setError(false)
+      setShowConfirmationModal(true)
+
+    }
+  };
+
+  useEffect(() => {
+    if (!error) {
+console.log("no any error comes ")
+    }
+  }, [error]);
+
   const addressHandler = (e) => {
     const { name, value } = e.target;
     setAddress((prev) => ({
@@ -43,27 +52,24 @@ function Shop() {
       [name]: value,
     }));
   };
-  // const handleFileChange = (e) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     setFile(e.target.files[0]);
-  //   }
-  // };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("submit button click")
-    validation();
-          
-    if (!error) {
-      setShowConfirmationModal(true)
-    }else{
-      setShowConfirmationModal(false)
+    console.log("submit button click");
+
+    validatePhoneNumber();
+    if(!error){
+      // setError(false)
+      handleSubmission()
+    }
+  };
+
+  const handleSubmission = async () => {
     try {
       const userId = getAuth().currentUser.uid;
       console.log(userId);
-      addDoc(collection(db, "ShopDetails"), {
+      await addDoc(collection(db, "ShopDetails"), {
         shopName: shopName,
-        //image: downloadURL,
         Name: name,
         MobileNumber: mobileNumber,
         email: email,
@@ -75,16 +81,16 @@ function Shop() {
           Country: address.country,
         },
       });
-    } catch {
-      alert("Please fill all and correct medicines data");
+      setShowConfirmationModal(true);
+    } catch (err) {
+      console.log("Error adding document: ", err);
     }
   };
-  }
+
   const handleConfirm = () => {
     setShowConfirmationModal(false);
     history.push("/inventory");
     setShopName("");
-    // setFile("");
     setName("");
     setMobileNumber("");
     setEmail("");
@@ -103,7 +109,6 @@ function Shop() {
   return (
     <div>
       <Navigation />
-      {/* <Image/> */}
       <Card>
         <div>
           <h1 className={classes.heading}>Shop Details</h1>
@@ -119,7 +124,6 @@ function Shop() {
               onChange={(e) => setShopName(e.target.value)}
             />
           </div>
-          
           <div className={classes.control}>
             <label htmlFor="name">Owner Name</label>
             <input
@@ -195,7 +199,7 @@ function Shop() {
         <hr />
         {error && (
           <div style={{ color: "red" }}>
-            <p>Enter a valid 10 digit number </p>
+            <p>Enter a valid 10 digit number</p>
           </div>
         )}
 
@@ -221,8 +225,11 @@ function Shop() {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <p>  Thank you for providing your shop details. You can now navigate to the
-                    Inventory page to manage your products and inventory.</p>
+                  <p>
+                    Thank you for providing your shop details. You can now
+                    navigate to the Inventory page to manage your products and
+                    inventory.
+                  </p>
                 </div>
                 <div className="modal-footer">
                   <button

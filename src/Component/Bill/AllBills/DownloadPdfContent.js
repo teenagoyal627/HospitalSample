@@ -1,9 +1,9 @@
 import React from "react";
 import classes from './AllBill.module.css'
 import ShopData from "./ShopData";
-const PdfContent = ({
+const DownloadPdfContent = ({
   records,
-  currentUser,
+  currentIndex,
   bill,
   medicineDialog,
   shopData,
@@ -32,7 +32,7 @@ const PdfContent = ({
       <form className={classes.form}>
         <div>
           {records
-            .filter((item, index) => index === currentUser)
+            .filter((item, index) => index === currentIndex)
             .map((filterdata,index) => (
               <div key={index}>
                 <h3>Medical Invoice</h3>
@@ -90,4 +90,4 @@ const PdfContent = ({
   );
 };
 
-export default PdfContent;
+export default DownloadPdfContent;

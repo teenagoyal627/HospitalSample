@@ -15,20 +15,20 @@ import {
 } from 'react-instantsearch-dom';
 import SearchDialogBoxContent from "./SearchedDialogBox";
 
+
 const searchClient = algoliasearch('14OX7XE6JW', '743e303ed56223046ae6fdd3a4137847')
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const SearchDialog = ({
+
+const SearchBar = ({
   searchQuery,
   setSearchQuery,
+  currentUserUID,
   bill,
   records,
   handlePrint,
   showShopData,
- currentUser,
- setCurrentUser
-
 }) => {
   const [medicineDialog, setMedicineDialog] = useState({
     visible: false,
@@ -36,9 +36,16 @@ const SearchDialog = ({
   });
    const [searchCurrentUser,setSearchCurrentUser]=useState(null)
 
+
+// const ConfigureWithLogging=({filters})=>{
+// useEffect(()=>{
+//   console.log("filtered data",filters)
+// },[filters])
+// return <Configure filters={filters}/>
+// }
+
   function viewHandler(hits,index) {
     const objectId=hits[index].objectID;
-    console.log("the index number of aloglia search ",objectId)
     setSearchCurrentUser(objectId)
     setMedicineDialog({
       visible: true,
@@ -49,13 +56,13 @@ const SearchDialog = ({
     setMedicineDialog((prev) => ({ ...prev, visible: false }));
   };
 
-  console.log(searchQuery);
   return (
     <InstantSearch
     className={classes.instantSearch}
       searchClient={searchClient}
       indexName="AllBills"
     >
+   
     <div className={classes.search} >
         <SearchBox
           translations={{ placeholder: "Search Bill by Patient, Hospital & Doctor Name" }}
@@ -77,15 +84,10 @@ const SearchDialog = ({
           <tbody>
             <CustomHits
              viewHandler={(hits,index)=>viewHandler(hits,index)}
-              searchCurrentUser={searchCurrentUser} 
-               currentUser={currentUser}
-               setCurrentUser={setCurrentUser} 
                className={classes.hit}
+               currentUserUID={currentUserUID}
               />
-            {console.log('search currentUser according to algolia search' ,searchCurrentUser)}
-            {console.log('currentUser according to algolia search' ,currentUser)}
-            {console.log(' set currentUser according to algolia search' ,setCurrentUser)}
-
+          
           </tbody>
         </table>
       )}
@@ -142,11 +144,12 @@ const SearchDialog = ({
     </InstantSearch>
   );
 };
-const CustomHits = connectHits(({ hits, viewHandler,searchCurrentUser }) => {
+const CustomHits = connectHits(({ hits, viewHandler,currentUserUID }) => {
   let serialNumber = 0;
+  const filterData=hits.filter(hit=>hit.UserID===currentUserUID)
   return (
     <>
-      {hits.map((hit, index) => (
+      {filterData.map((hit, index) => (
         <tr key={hit.objectID}>
           <td>{++serialNumber}</td>
           <td>{hit.PatientName}</td>
@@ -168,66 +171,4 @@ const CustomHits = connectHits(({ hits, viewHandler,searchCurrentUser }) => {
   )
 })
 
-export default SearchDialog;
-
-// i write code same as allbill.js file so why it is work for this and not for searchDialog.js component see this is my allbill.js code of viewHandler function ```function viewHandler(index) {
-//   setMedicineDialog({
-//     visible: true,
-//     billIndex: index,
-//   });
-// }
-// ``` and here i pass this as a current user ```<td>
-//                 {" "}
-//                 <button
-//                   variant="outlined"
-//                   className={classes.buttons}
-//                   onClick={() => viewHandler((currentUser=index))}
-//                 >
-//                   View Bill
-//                 </button>
-//               </td>``` and for show dialog box i write condition if index is equal to currentuser then it show the dilaog box and its data see code here ``` <form className={classes.form}>
-//     <div>
-//     {records
-//     .filter((item, index) => index===currentUser)
-//     .map((filterdata) => ( 
-//           <div key={filterdata.id}>
-//             <h3>Medical Invoice</h3>
-//             <div className={classes.container}>
-//               <div className={classes.leftData}>
-//                 <p>Date: {filterdata.Date}</p>
-//                 <p>Hospital Name: {filterdata.HospitalName}</p>
-//                 <p>Doctor Name: {filterdata.DoctorName}</p>
-//               </div>
-
-//               <div className={classes.rightData}>
-//                 <p>Patient Name: {filterdata.PatientName}</p>
-//                 <p>Mobile Number:{filterdata.MobileNumber}</p>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//     </div>``` so why it is not works with searchDialog i write code same as allbill.js still it not work see my searchDialog box code ```const CustomHits = connectHits(({ hits ,viewHandler}) => {
-// let serialNumber=0;
-// return (
-//   <>
-//     {hits.map((hit,index) => (
-//         <tr key={hit.objectID}>
-//           <td>{++serialNumber}</td>
-//           <td>{hit.PatientName}</td>
-//           <td>{hit.Date}</td>
-//           <td>{hit.HospitalName}</td>
-//           <td>
-//           <button
-//                   variant="outlined"
-//                   className={classes.buttons}
-//                   onClick={() => viewHandler(currentUser=index)}
-//                 >
-//                   View Bill
-//                 </button>
-//               </td>
-//         </tr>
-//     ))}
-//   </>
-// )
-// })
-// ```
+export default SearchBar;

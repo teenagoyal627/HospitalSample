@@ -68,7 +68,14 @@ const Inventory = () => {
   return (
     <div>
     <Navigation/>
-   
+    {(inventory.length === 0) ? (
+      <div className='message-container'>
+        <div className="message">
+          Add the inventories on the store
+        </div>
+    
+      </div>
+    ) : (
    <div class="table-responsive">
    <table class="table caption-top ">
         <thead>
@@ -104,12 +111,14 @@ const Inventory = () => {
         </tbody>
     </table>
    </div>
-   
+    )
+   }
    <Link to ='/inventoryForm' >
-   <button type='submit' className="button">Add More</button>
+   {console.log(inventory)}
+   <button type='submit' style={{marginLeft:"15rem",marginTop:"3rem"}} className="button">{(inventory.length===0)? 'Add Inventories':'Add More '}</button>
    </Link>
    <Link to ='/createBill' >
-   <button type='submit' className='button'>Save Changes</button>
+   <button type='submit' style={{width:"20rem"}} className='button'>Go to Create Bills of Patients</button>
    </Link>
    
     </div>

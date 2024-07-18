@@ -1,6 +1,6 @@
 import React, {  useState } from "react";
 import "./Signup.css";
-import { auth, db } from "../../Firebase";
+import { auth, db } from "../../../Firebase";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { doc, setDoc } from "firebase/firestore";
 import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -10,13 +10,19 @@ import {
   getAuth,
   signInWithPopup,
 } from "firebase/auth";
-import HomePageNavigation from "../Header/HomePageNavigation";
+import HomePageNavigation from "../../Header/HomePageNavigation";
+import { changeInputHandler } from "../Login/Utilities";
 
 const Signup = (shopId) => {
   const history = useHistory();
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const[signupFields,setSignupFields]=useState({
+    fullName:"",
+    email:"",
+    password:""
+  })
+  // const [userName, setUserName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [visible,setVisible]=useState(false);
   
 
@@ -28,9 +34,9 @@ const Signup = (shopId) => {
     + "(?=.*[@#$%^&+=])"
     + "(?=\\S+$).{8,20}$";  
     const regExUser=  "^[A-Za-z][A-Za-z0-9_]{4,29}$";
-     if(regExEmail.test(email) && regExPass.match(password) && regExUser.match(userName)){
+     if(regExEmail.test(signupFields.email) && regExPass.match(signupFields.password) && regExUser.match(signupFields.fullName)){
         console.log("valid email")
-      }else if(!regExEmail.test(email) && email===""  &&  !regExPass.match(password) && password==="" && !regExPass.match(userName) && userName===""){
+      }else if(!regExEmail.test(signupFields.email) && signupFields.email===""  &&  !regExPass.match(signupFields.password) && signupFields.password==="" && !regExPass.match(signupFields.fullName) && signupFields.fullName===""){
         alert("Check Email and enter strong password")
         history.replace('/signup')
       }
@@ -49,8 +55,8 @@ const Signup = (shopId) => {
 
       const userCrediential = await createUserWithEmailAndPassword(
         auth,
-        email,
-        password
+        signupFields.email,
+        signupFields.password
       );
       // console.log(userCrediential)
       //console.log(typeof(userCrediential))
@@ -58,7 +64,6 @@ const Signup = (shopId) => {
       //check user id is present or not
       if (userId != null) 
       console.log("the user id is   ",userId);
-      console.log(typeof(userId))
       // const userRef = doc(db, "users", userId);
       // const userSnap = await getDoc(userRef);
       // if (userSnap.exists()) {
@@ -68,8 +73,8 @@ const Signup = (shopId) => {
 
       const dateAndTime = new Date();
       await setDoc(doc(db, "users", userId), {
-        UserName: userName,
-        Email: email,
+        FullName: signupFields.fullName,
+        Email: signupFields.email,
         CreatedAt: dateAndTime,
         UpdatedAt: dateAndTime,
         ShopId:shopId
@@ -84,9 +89,11 @@ const Signup = (shopId) => {
       //     UpdatedAt: dateAndTime,
       //   });
       // }
-      setUserName("");
-      setEmail("");
-      setPassword("");
+      setSignupFields({
+        fullName:"",
+        email:"",
+        password:""
+      })
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":
@@ -121,61 +128,7 @@ const Signup = (shopId) => {
   return (
     <div>
     <HomePageNavigation/>
-    <div className="form">
-      <div>
-        <h1 className="heading">Signup</h1>
-      </div>
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          placeholder="Enter your user name"
-          id="name"
-          autoComplete="new-user"
-          required
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Enter your email"
-          id="email"
-          autoComplete="new-email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <div className="password-container">
-        <input
-          type={visible ? "text" :"password"}
-          placeholder="Enter password"
-          id="password"
-          autoComplete="new-password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div 
-        className="password-toggle"
-        onClick={()=>setVisible(!visible)}
-        >
-          {visible ? <AiOutlineEye /> :  <AiOutlineEyeInvisible />}
-        </div>
-        </div>
-        <button type="submit" onClick={Validation } >Sign up</button>
-        <hr />
-        <div>
-          <button type="submit" onClick={googleHandler}>
-            Google
-          </button>
-        </div>
-        <h5>
-          Already have an account ?
-          <Link to="/login" className="link">
-            Login
-          </Link>
-        </h5>
-      </form>
-    </div>
+   
     </div>
   );
 };

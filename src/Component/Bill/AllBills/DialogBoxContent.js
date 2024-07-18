@@ -1,9 +1,7 @@
 import React from "react";
 import classes from './AllBill.module.css'
-const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medicineDialog }) => {
-        //console.log(searchCurrentUser)
-        //console.log("records are ",records)
-       // console.log("the current user of allbill",currentUser)
+const DialogBoxContent = ({ records, searchCurrentUser, bill, currentIndex, medicineDialog }) => {
+       
   const totalAmount = () => {
     if (bill.length > 0 && medicineDialog.billIndex !== null) {
       const currentBill = records[medicineDialog.billIndex];
@@ -14,13 +12,12 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
     }
     return 0;
   };
-  // const custiemr = records[medicineDialog.billIndex];
-  // console.log(custiemr)
+ 
   return (
     <form className={classes.form}>
       <div>
         {records
-          .filter((item, index) =>  index === currentUser || item.id === searchCurrentUser)
+          .filter((item, index) =>  index === currentIndex || item.id === searchCurrentUser)
           .map((filterdata) => 
           (
             <div key={filterdata.id}>
@@ -42,11 +39,11 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
           ))}
       </div>
        <br/><br/>
-      <div className="table-responsive" style={{marginLeft:"2rem",width:"55rem"}} >
-        <table className="table" >
-          <thead>
-            <tr style={{backgroundColor:"skyblue"}}>
-              <th>Medicine Name</th>
+      <div className="table-responsive" >
+        <table className="table" style={{marginLeft:"5rem",width:"90%"}}>
+          <thead >
+            <tr style={{ backgroundColor: "#1b3e5a",color:"white"}}>
+              <th >Medicine Name</th>
               <th> Quantity</th>
               <th>Duration</th>
               <th>Unit Price</th>
@@ -55,14 +52,9 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
             </tr>
           </thead>
           <tbody>
-            {console.log("enter in tobody of meidcine entiries")}
-            {console.log("medicinedialog", medicineDialog.billIndex)}
-            {console.log("bill", bill)}
-            {console.log("MedicineEntries", bill[medicineDialog.billIndex]?.MedicineEntries)}          
             {bill.length > 0 &&
               medicineDialog.billIndex !== null &&
               records[medicineDialog.billIndex]?.MedicineEntries.map((medicine) => {
-                console.log("Current Medicine", medicine);
                 return (
                   <tr key={medicine.id}>
                     <td>{medicine.medicineName}</td>
@@ -77,9 +69,9 @@ const DialogBoxContent = ({ records, searchCurrentUser, bill, currentUser, medic
           </tbody>
         </table>
       </div>
-      <hr style={{marginLeft:"2rem",width:"55rem"}}/>
+      <hr style={{marginLeft:"5rem",width:"90%"}}/>
       <h5 className={classes.totalAmount}>Total Amount: {totalAmount()}</h5>
-      <hr style={{marginLeft:"2rem",width:"55rem"}}/>
+      <hr style={{marginLeft:"5rem",width:"90%"}}/>
     </form>
   );
 };

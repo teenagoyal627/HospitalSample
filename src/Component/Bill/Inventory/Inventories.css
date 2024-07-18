@@ -15,14 +15,30 @@
     border-color: rgb(157, 165, 232);
 }
 
-/* table.table-fit {
-    width: auto !important;
-    table-layout: auto !important;
-  }
-  table.table-fit thead th,
-  table.table-fit tbody td,
-  table.table-fit tfoot th,
-  table.table-fit tfoot td {
-    width: auto !important;
-  } */
+.message {
+  background-color: skyblue;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width:34rem;
+  margin-top: 120px; 
+  margin-left:4rem;
+  font-size: 1.5rem;
+}
+
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh; /* Full viewport height */
+  text-align: center;
+}
+
+.message {
+  background-color: skyblue;
+  padding: 20px;
+  border-radius: 10px;
+  width: 34rem;
+  font-size: 1.5rem;
+}
 

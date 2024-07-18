@@ -69,6 +69,26 @@
     font-weight: bold;
 }
 
+  .datalistOptions {
+    background-color:red;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    background-color: white;
+  }
+  
+  .datalistOptions option {
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .datalistOptions option:hover {
+    background-color: #f1f1f1;
+  }
+  
+
 @media screen and (max-width:800px) {
     .control input{
         width: 19rem;

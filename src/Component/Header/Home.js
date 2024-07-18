@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Signup from "../Authentication/Signup";
+import Signup from "../Authentication/Signup/Signup";
 import HomePageNavigation from "./HomePageNavigation";
 import './Home.module7.css'
 function Home() {

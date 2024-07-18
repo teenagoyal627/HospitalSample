@@ -1,14 +1,15 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../../Firebase";
+import { getAuth } from "firebase/auth";
 
 export async function GetAllBills() {
- 
+//  console.log("get all nill functin is call")
   try {
-    const querySnapshot = await getDocs(
-      query(collection(db, "CreateBillDetails"), 
-      orderBy("Date"))
-    );
-
+    const userId=getAuth().currentUser.uid;
+    const billRef=collection(db,"CreateBillDetails")
+    const q=query(billRef,where("UserID","==",userId))
+    const querySnapshot=await getDocs(q)
+    
     const result = [];
     querySnapshot.forEach((bill) => {
       result.push({
