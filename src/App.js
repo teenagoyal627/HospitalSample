@@ -5,14 +5,14 @@ import React, {  } from "react"
 import Home from "./Component/Header/Home"
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserDetails from "./Component/Authentication/UserDetails"
-import Shop from "./Component/ShopForm/Shop"
-import Inventory from "./Component/Bill/Inventory/Inventories"
-import InventoryForm from "./Component/Bill/Inventory/InventoryForm"
+import UserDetails from "./Component/Authentication/UserDetails/UserDetails"
+import Shop from "./Component/ShopDetails/Shop"
+import Inventory from "./Component/Bill/Inventory/StoreInventories/Inventories"
+import InventoryForm from "./Component/Bill/Inventory/InventoryDetailsForm/InventoryFunctionality"
 import CreateBill from "./Component/Bill/CreateBill/CreateBill"
 import AllBill from "./Component/Bill/AllBills/AllBill"
-import Profile from "./Component/Authentication/Profile"
-import Logout from "./Component/Authentication/Logout"
+// import Profile from "./Component/Authentication/Profile"
+import Logout from "./Component/Authentication/Logout/Logout"
 // import  AlgoliaSearch  from "./Component/Bill/AllBills/AlgoliaSearch"
 
 function App(){
@@ -27,7 +27,7 @@ function App(){
    <Route path='/inventoryForm'><InventoryForm/></Route>
    <Route path='/login'><Login/></Route>
    <Route path='/signup'><Signup/></Route>
-   <Route path='/profile'><Profile/></Route>
+   {/* <Route path='/profile'><Profile/></Route> */}
    <Route path='/logout'><Logout/></Route>
    {/* <Route path='/search'><AlgoliaSearch/></Route> */}
 </div>

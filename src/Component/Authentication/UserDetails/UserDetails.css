@@ -67,3 +67,15 @@
  margin-top: 1rem;
 }
 
+@media screen  and (max-width:600px){
+  .forms{
+      width: 23rem;
+  }
+  .forms input{
+      width: 20rem;
+  }
+  .forms button{
+      width: 19rem;
+  }
+ 
+}

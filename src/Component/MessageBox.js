@@ -2,8 +2,6 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 export const MessageBox = ({ showModal, handleClose,handleConfirm,title,body }) => {
-
-
   return (
     <>
       <Modal show={showModal} onHide={handleClose}>

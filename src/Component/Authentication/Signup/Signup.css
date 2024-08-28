@@ -67,12 +67,12 @@
     margin-bottom: 1rem;
 }
 
-@media screen  and (max-width:800px){
+@media screen  and (max-width:600px){
     .form{
         width: 23rem;
     }
     .form input{
-        width: 19rem;
+        width: 20rem;
     }
     .form button{
         width: 19rem;

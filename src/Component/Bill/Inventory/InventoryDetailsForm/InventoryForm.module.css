@@ -7,6 +7,7 @@
     font-size: 1.5rem;
     text-align: center;
     padding: .1rem;
+    margin-bottom: 2rem;
 }
 .control
 {
@@ -46,9 +47,16 @@ form button:hover,
     border-color: rgb(157, 165, 232);
 }
 
-@media screen and (max-width:750px) {
+@media screen and (max-width:600px) {
+    .control{
+        width: 25rem;
+    }
     .control input{
-        width: 20rem;
+        width: 22rem;
+    }
+    .form button{
+        width: 19rem;
+        margin-left: 1rem;
     }
     
 }

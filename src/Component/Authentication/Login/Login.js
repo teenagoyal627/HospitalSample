@@ -9,7 +9,7 @@ import {
   googleHandler,
   changeInputHandler,
   handleConfirm,
-} from "./Utilities";
+} from "../AuthenticationUtilities";
 
 const Login = () => {
   const [loginFields, setLoginFields] = useState({
@@ -42,7 +42,7 @@ const Login = () => {
         showModal={showModal}
         handleClose={() => setShowModal(false)}
         handleConfirm={() =>
-          handleConfirm(modalContent, history, setLoginFields, setShowModal)
+          handleConfirm(setShowModal, modalContent, history, setLoginFields)
         }
         title={modalContent.title}
         body={modalContent.body}

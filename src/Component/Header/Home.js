@@ -1,14 +1,12 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Signup from "../Authentication/Signup/Signup";
 import HomePageNavigation from "./HomePageNavigation";
 import './Home.module7.css'
 function Home() {
-  useEffect(() => {
-    setTimeout(() => {
-      <Signup />;
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     <Signup />;
+  //   }, 2000);
+  // }, []);
   return (
     <div>
       <HomePageNavigation />
@@ -67,12 +65,12 @@ function Home() {
                 order to utilize this dashboard
                 
               </p>
-              <button className="button">
-                <Link to="/signup" style={{ color: "black", textDecoration: "none" }}>
+              <button className="buttons">
+                <Link to="/signup" style={{ color: "black", textDecoration: "none"}}>
                   Signup
                 </Link>
               </button>
-              <button className="button">
+              <button className="buttons">
                 <Link to="/login" style={{ color: "black", textDecoration: "none" }}>
                   Login
                 </Link>

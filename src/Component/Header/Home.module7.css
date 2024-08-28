@@ -84,19 +84,38 @@ header{
     height: auto;
     margin-left: 150px;
 }
-.button{
+.buttons{
     border-radius: 0.40rem;
     font-size: 1.3rem;
-    width: 13rem;
+    /* width: 13rem; */
     padding: 0.1rem;
     /* align-items: center; */
     /* margin-left: .6rem; */
     margin: 1rem auto;
 }
-.button:hover,
-.button:active{
+.buttons:hover,
+.buttons:active{
     background-color:#a4ccf0;
     border-color:#f7f8f9;
+}
+.buttons{
+    width: 15rem;
+    padding: 0.6rem;
+    margin: auto;
+    margin-left: 1rem;
+    border-radius: 0.7rem;
+    font-size: 1.3rem;
+    color: rgb(24, 23, 23);
+    text-decoration: none;
+}
+
+.buttons:hover,
+.buttons:active{
+cursor: pointer;
+background-color: rgb(157, 165, 232);
+border-color: rgb(157, 165, 232);
+text-decoration: none;
+
 }
 /* features */
 .features-header{

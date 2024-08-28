@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import classes from "./CreateBill.module.css";
-import { CiCircleRemove } from "react-icons/ci";
+import { AiFillDelete } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../../Firebase";
-import Card from "../../UI/Card";
 import Navigation from "../../Header/Navigation";
+import { getAuth } from "firebase/auth";
+import Bill from "../../UI/Bill";
 function CreateBill1() {
   const history = useHistory();
 
@@ -15,38 +22,61 @@ function CreateBill1() {
   const [hospitalName, setHospitalName] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [medicineData, setMedicineData] = useState([
-    { medicineName:"", quantity:"", price:"" },
+    {
+      medicineName: "",
+      quantity: "",
+      price: "",
+      duration: "",
+      instructions: "",
+    },
   ]);
   const [medicineNames, setMedicineNames] = useState([]);
-  const [warning,setWarning]=useState(null)
-  const [availableQuantities,setAvailableQuantities]=useState({})
-  //this is for fetch the data from firesotre when the page is render
- 
+  const [warning, setWarning] = useState(null);
+  const [error, setError] = useState(false);
+
+  //this is for fetch the data from firestone when the page is render
   useEffect(() => {
     const fetchMedicineNames = async () => {
-      // Fetch medicine names from Firestore collection
-      const querySnapshot = await getDocs(collection(db, "CreateInventory"));
-      const names = querySnapshot.docs.map((doc) => doc.data().MedicineName);
-      const quantity = querySnapshot.docs.map((doc) => doc.data().Quantity);
-      setMedicineNames(names);
-      console.log(names)
-      console.log(quantity)
+      // Fetch medicine names from Firestone collection
+      try {
+        const userId = getAuth().currentUser.uid;
+        const createBillRef = collection(db, "CreateInventory");
+        const q = query(createBillRef, where("UserID", "==", userId));
+        const querySnapshot = await getDocs(q);
+        const names = querySnapshot.docs.map((doc) => doc.data().MedicineName);
+        setMedicineNames(names);
+      } catch (error) {
+        alert(error);
+      }
     };
-
     fetchMedicineNames();
   }, []);
 
   useEffect(() => {
     const date = new Date();
-    setCurrentDate(date.toDateString()); //return the date only not time
+    setCurrentDate(date.toDateString()); 
   }, []);
 
   const addFields = () => {
     setMedicineData((prev) => [
       ...prev,
-      { medicineName: "", quantity: "", price: "" },
+      {
+        medicineName: "",
+        quantity: "",
+        price: "",
+        duration: "",
+        instructions: "",
+      },
     ]);
-    // This is the new array that will replace the previous state. The spread operator ...prev is used to create a new array with all the elements from the previous state.
+  };
+
+  const validation = () => {
+    const isValidPhoneNumber = /^\d{10}$/.test(mobileNumber);
+    if (!isValidPhoneNumber) {
+      setError(true);
+    } else {
+      setError(false);
+    }
   };
 
   const removeFields = (index) => {
@@ -56,119 +86,51 @@ function CreateBill1() {
     //  _ this indicates that we know that  from filter function we pass parameter so as an element parameter we not wants to pass anything
   };
 
-  const handleTableChange = async(index, field, value) => {
+  const handleTableChange = async (index, field, value) => {
     const updatedInputFields = [...medicineData];
     updatedInputFields[index][field] = value;
 
-    if(field ==='quantity'){
-      const price=updatedInputFields[index].price;
-      console.log("price is ",price)
-      const quantity= value ? parseInt(value) :0;
-      console.log("quantity is ",quantity)
-      if(quantity>0){
-        const medicineName=updatedInputFields[index].medicineName;
-       
-        const querySnapshot = await getDocs(
+    if (field === "quantity") {
+      const quantity = value ? parseInt(value) : 0;
+      //now we check that the entered quantity is not more than availble quantity
+      if (quantity > 0) {
+        const UserMedicineName = updatedInputFields[index].medicineName;
+        //now get the data form database for quantity check
+        const querySnapShot = await getDocs(
           query(
             collection(db, "CreateInventory"),
-            where("MedicineName", "==", medicineName)
-          ));
-
-          if(!querySnapshot.empty){
-            const docData = querySnapshot.docs[0].data();
-            // console.log("backend data",docData.Quantity)
-            const availabelQunatity=docData.Quantity;
-            
-            console.log("data form backend ",availabelQunatity)
-            
-           if(quantity>availabelQunatity){
-              updatedInputFields[index].price=console.error("please entered ");;
-              setWarning("Entered quantity exceeds available quantity ")
-              return ;
-            }
-            else if(quantity<=availabelQunatity){
-              setWarning("")
-            }
-          
-        if (quantity !== '' || 0) 
-        {
-          const newQuantity=parseInt(quantity);
-          console.log("new qunatity",newQuantity);
-          if(!isNaN (newQuantity)){
-            const priceOnBackend=docData.Price;
-            console.log(priceOnBackend)
-            const initialPrice=priceOnBackend;
-            console.log( "intital price",initialPrice);
-          const totalPrice = initialPrice * newQuantity;
-          updatedInputFields[index].price = totalPrice.toString();
-          console.log("total price",totalPrice)
+            where("MedicineName", "==", UserMedicineName)
+          )
+        );
+        if (!querySnapShot.empty) {
+          const docData = querySnapShot.docs[0].data();
+          const availableQuantity = docData.Quantity;
+          if (availableQuantity === "0") {
+            setWarning("This medicine is out of stock");
+          } else if (quantity > availableQuantity) {
+            setWarning("Entered Quantity is more than available quantity");
+            updatedInputFields[index].price = "";
+            return;
+          } else if (quantity <= availableQuantity || quantity === "") {
+            setWarning("");
           }
-        }
-        else{
-          setWarning("")
+          if (quantity !== "" || 0) {
+            const newQuantity = parseInt(quantity);
+            if (!isNaN(newQuantity)) {
+              const backendPrice = docData.Price;
+              const totalPrice = backendPrice * newQuantity;
+              updatedInputFields[index].price = totalPrice.toString();
+            }
+          } else setWarning("");
         }
       }
-        // else{
-        //   // const totalPrice = price * quantity;
-        //   // updatedInputFields[index].price = totalPrice ||"";
-        //   setWarning('ll');    
-        //     }
-      
-    } 
-      
-      // if(value ===""){
-      //   setWarning("")
-      //   setMedicineData(updatedInputFields)
-      // }
-
-      
-      // else{
-      //     const totalPrice=price*quantity;
-      //     updatedInputFields[index].price=totalPrice;
-      //         setWarning("");
-      //   }
-      // }
-      
-      
-     
-      
-
     }
     setMedicineData(updatedInputFields);
   };
 
-  //  const handleQuantityChange =async(index,value)=>{
-  //   if(value===""){
-  //     setWarning("")
-  //     return;
-  //   }
-  //   const querySnapshot =await getDocs(
-  //     query(
-  //       collection(db,"CreateInventory"),
-  //       where("MedicineName","==" , value)
-  //     )
-  //   )
-  //   const docData = querySnapshot.docs[0].data();
-  //     console.log(docData.Quantity);
-  //     const updatedInputFields = [...medicineData];
-  //     updatedInputFields[index].quantity = docData.Quantity;
-      
-  //     const availabelQunatity=docData.Quantity;
-  //     console.log("quantity available on backend",availabelQunatity)
-  //     const quantity=updatedInputFields[index].quantity;
-  //     console.log("user entered quantity",quantity)
-  //     if(quantity<availabelQunatity)
-  //     {
-  //       console.log("qunatity  availabale")
-  //     }
-  //     else{
-  //       console.log("medicine is more than availabel")
-  //     }
-  //  }
-
   const handleMedicineNameChange = async (index, value) => {
-    if(value===""){
-      setWarning("")
+    if (value === "") {
+      setWarning("");
       return;
     }
     const querySnapshot = await getDocs(
@@ -177,51 +139,55 @@ function CreateBill1() {
         where("MedicineName", "==", value)
       )
     );
-    // console.log(querySnapshot)
-    
     if (!querySnapshot.empty) {
       const docData = querySnapshot.docs[0].data();
-      // console.log(docData.Quantity);
       const updatedInputFields = [...medicineData];
       updatedInputFields[index].quantity = 0;
       updatedInputFields[index].price = docData.Price;
       setMedicineData(updatedInputFields);
-      setWarning("")
+      setWarning("");
+    } else {
+      setWarning("This medicine is not present in stock ");
     }
-    
-    else{
-      setWarning("This medicine is not present in stock ")
-    }
-    
-
   };
 
   const createHandler = async (event) => {
     event.preventDefault();
-
-    const docRef = await addDoc(collection(db, "CreateBillDetails"), {
-      PatientName: patientName,
-      MobileNumber: mobileNumber,
-      DoctorName: doctorName,
-      HospitalName: hospitalName,
-      MedicineEntries: medicineData,
-      Date: currentDate,
-    });
-    console.log(docRef.id);
-    history.replace("/allBill");
-    // Reset form fields
-    setPatientName("");
-    setMobileNumber("");
-    setDoctorName("");
-    setHospitalName("");
-    setMedicineData([{ medicineName: "", quantity: "", price: "" }]);
+    validation();
+    if (!error) {
+      const userId = getAuth().currentUser.uid;
+      await addDoc(collection(db, "CreateBillDetails"), {
+        PatientName: patientName,
+        MobileNumber: mobileNumber,
+        DoctorName: doctorName,
+        HospitalName: hospitalName,
+        MedicineEntries: medicineData,
+        Date: currentDate,
+        UserID: userId,
+      });
+      history.replace("/allBill");
+      setPatientName("");
+      setMobileNumber("");
+      setDoctorName("");
+      setHospitalName("");
+      setMedicineData([
+        {
+          medicineName: "",
+          quantity: "",
+          price: "",
+          duration: "",
+          instructions: "",
+        },
+      ]);
+    }
   };
 
   return (
     <div>
       <Navigation />
-      <Card>
+      <Bill>
         <p className={classes.date}>Date: {currentDate}</p>
+        <hr />{" "}
         <div>
           <h1 className={classes.heading}>Create Bill</h1>
         </div>
@@ -266,69 +232,91 @@ function CreateBill1() {
               onChange={(e) => setMobileNumber(e.target.value)}
             />
           </div>
-
-          {/* Input fields */}
           <label>Medicines Entries</label>
-           
           {medicineData.map((input, index) => (
-            <div key={index} className={classes.form}>
+            <div key={index}>
               <div className={classes.medicalData}>
                 <input
                   type="text"
+                  style={{ padding: ".2rem", margin: ".2rem", width: "13rem" }}
                   placeholder="medicineName"
                   value={input.medicineName}
                   onChange={(e) => {
                     handleTableChange(index, "medicineName", e.target.value);
                     handleMedicineNameChange(index, e.target.value);
                   }}
-                  list="medicineOptions"
+                  // list="medicineOptions"
+                  list={`medicineOptions-${index}`}
                 />
-                <datalist id="medicineOptions">
+                <datalist id={`medicineOptions-${index}`} className={classes.datalistOptions}>
                   {medicineNames.map((name, index) => (
                     <option key={index} value={name} />
                   ))}
                 </datalist>
                 <input
                   type="number"
+                  style={{ padding: ".2rem", margin: ".2rem", width: "13rem" }}
                   placeholder="quantity"
                   value={input.quantity}
-                  onChange={(e) =>{
+                  onChange={(e) =>
                     handleTableChange(index, "quantity", e.target.value)
-                    // handleQuantityChange(index, e.target.value);
-                  }
                   }
                 />
                 <input
                   type="number"
+                  style={{ padding: ".2rem", margin: ".2rem", width: "13rem" }}
                   placeholder="Price"
                   value={input.price}
                   onChange={(e) =>
                     handleTableChange(index, "price", e.target.value)
                   }
                 />
+                <input
+                  type="text"
+                  style={{ padding: ".2rem", margin: ".2rem", width: "13rem" }}
+                  placeholder="Instructions"
+                  value={input.instructions}
+                  onChange={(e) =>
+                    handleTableChange(index, "instructions", e.target.value)
+                  }
+                />
+                <input
+                  type="number"
+                  style={{ padding: ".2rem", margin: ".2rem", width: "13rem" }}
+                  placeholder="Duration"
+                  value={input.duration}
+                  onChange={(e) =>
+                    handleTableChange(index, "duration", e.target.value)
+                  }
+                />
                 <p
                   className={classes.remove}
                   onClick={() => removeFields(index)}
                 >
-                  <CiCircleRemove size={25} />
+                  <AiFillDelete size={30} style={{ marginTop: ".2rem" }} />
                 </p>
               </div>
             </div>
           ))}
           {warning && <p className={classes.warning}>{warning}</p>}
-          <button type="button" onClick={addFields}>
+          <button
+            style={{ marginTop: "1rem", width: "10rem", marginLeft: ".2rem" }}
+            type="button"
+            onClick={addFields}
+          >
             Add more
           </button>
-
-          <button style={{ marginTop: "1rem", width: "30rem" }}>
-            Create Bill
-          </button>
+          <button>Create Bill</button>
         </form>
-      </Card>
+        {error && (
+          <div style={{ color: "red" }}>
+            <p>Enter a valid 10 digit number </p>
+          </div>
+        )}
+      </Bill>
       {/* <Sample/> */}
     </div>
   );
 }
 
 export default CreateBill1;
-// Implement Autocomplete: Use a library or build your own autocomplete functionality for the medicine name input field in the createbill form. This will help users select medicine names from the available inventory.

@@ -45,7 +45,7 @@ form button:hover,
     background-color: rgb(157, 165, 232);
     border-color: rgb(157, 165, 232);
 }
-@media screen  and (max-width:800px){
+@media screen  and (max-width:600px){
     .form{
         width: 22rem;
     }
